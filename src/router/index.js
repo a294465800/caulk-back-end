@@ -4,6 +4,7 @@ import login from '@/components/login'
 import index from '@/components/index'
 import indexContent from '@/components/indexContent'
 import reservationList from '@/components/reservationList'
+import commodityList from '@/components/commodityList'
 
 Vue.use(Router)
 
@@ -24,6 +25,10 @@ export default new Router({
         path: '/list/reservation',
         name: 'reservationList',
         component: reservationList
+      }, {
+        path: '/list/commodity',
+        name: 'commodityList',
+        component: commodityList
       }]
     }
   ]

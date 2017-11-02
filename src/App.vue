@@ -48,6 +48,14 @@ body {
   flex-direction: column;
 }
 
+.warning {
+  color: #ffd04b;
+}
+
+.success {
+  color: #1aad19;
+}
+
 /* 面包屑导航 */
 .breadcrumb {
   margin-bottom: 20px;
@@ -56,6 +64,12 @@ body {
 /* 操作 */
 .operation {
   text-align: right;
+  padding: 1px;
+}
+
+.operation-btns {
+  text-align: left;
+  margin-bottom: 20px;
 }
 
 /* 页码 */

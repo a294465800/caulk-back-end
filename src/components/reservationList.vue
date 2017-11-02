@@ -7,14 +7,6 @@
 .tale-list {
   flex: 1;
 }
-
-.warning {
-  color: #ffd04b;
-}
-
-.success {
-  color: #1aad19;
-}
 </style>
 
 <template>
