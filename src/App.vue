@@ -56,6 +56,10 @@ body {
   color: #1aad19;
 }
 
+.price {
+  color: #fa5555;
+}
+
 /* 面包屑导航 */
 .breadcrumb {
   margin-bottom: 20px;
@@ -64,7 +68,11 @@ body {
 /* 操作 */
 .operation {
   text-align: right;
-  padding: 1px;
+  margin-bottom: 20px;
+}
+
+.operation .el-form-item {
+  margin-bottom: 0;
 }
 
 .operation-btns {
@@ -87,5 +95,11 @@ body {
 .flex-column {
   display: flex;
   flex-direction: column;
+}
+
+/* element 组件 */
+
+.el-select .el-input {
+  width: 130px;
 }
 </style>

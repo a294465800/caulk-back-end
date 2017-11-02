@@ -7,10 +7,6 @@
 .tale-list {
   flex: 1;
 }
-
-.price {
-  color: #fa5555;
-}
 </style>
 
 <template>
