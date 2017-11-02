@@ -2,7 +2,7 @@
 .login-wrap {
   width: 100%;
   height: 100%;
-  background-color: #324157;
+  background-color: #545c64;
 }
 
 .login-part {

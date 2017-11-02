@@ -96,7 +96,7 @@ body > .el-container {
           <el-menu-item-group>
             <el-menu-item index="/list/commodity">商品列表</el-menu-item>
             <el-menu-item index="/list/order">成交订单</el-menu-item>
-            <el-menu-item index="/list/commodity/imgs">商品首页轮播</el-menu-item>
+            <el-menu-item index="/list/commodity/images">商品首页轮播</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-menu-item index="/company">

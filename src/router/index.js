@@ -6,6 +6,7 @@ import indexContent from '@/components/indexContent'
 import reservationList from '@/components/reservationList'
 import commodityList from '@/components/commodityList'
 import commodityOrder from '@/components/commodityOrder'
+import commodityImages from '@/components/commodityImages'
 
 Vue.use(Router)
 
@@ -34,6 +35,10 @@ export default new Router({
         path: '/list/order',
         name: 'commodityOrder',
         component: commodityOrder
+      }, {
+        path: '/list/commodity/images',
+        name: 'commodityImages',
+        component: commodityImages
       }]
     }
   ]

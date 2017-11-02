@@ -102,4 +102,18 @@ body {
 .el-select .el-input {
   width: 130px;
 }
+
+.hide .el-upload {
+  display: none;
+}
+
+.img-list .el-upload-list__item,
+.img-list .el-upload--picture-card {
+  width: 250px;
+  height: 250px;
+}
+.img-list .el-upload--picture-card i {
+  font-size: 40px;
+  line-height: 250px;
+}
 </style>
