@@ -36,10 +36,9 @@ body > .el-container {
 .nav-bar {
   height: 100%;
   border-right: 0;
-  overflow: auto;
 }
 
-.nav-bar.active {
+.el-aside.active {
   overflow: unset;
 }
 
@@ -80,8 +79,8 @@ body > .el-container {
   <el-container>
 
     <!-- 左侧导航 -->
-    <el-aside width="auto">
-      <el-menu default-active="2" :class="{'active': isCollapse}" class="nav-bar" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :collapse="isCollapse" router>
+    <el-aside width="auto" :class="{'active': isCollapse}">
+      <el-menu :default-active="activeNav" class="nav-bar" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :collapse="isCollapse" router>
         <div class="collapse" @click="collapseNav">
           <i :class="{'active': isCollapse}" class="el-icon-caret-left"></i>
         </div>
@@ -125,8 +124,15 @@ export default {
   data() {
     return {
       //导航展开控制
-      isCollapse: false
+      isCollapse: false,
+
+      activeNav: "/"
     };
+  },
+
+  created() {
+    this.activeNav = this.$route.path
+    // console.log(this.$route.path);
   },
   methods: {
     //退出登录

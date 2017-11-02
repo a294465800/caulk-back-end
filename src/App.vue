@@ -47,4 +47,31 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+/* 面包屑导航 */
+.breadcrumb {
+  margin-bottom: 20px;
+}
+
+/* 操作 */
+.operation {
+  text-align: right;
+}
+
+/* 页码 */
+.pages {
+  text-align: right;
+  margin-top: 20px;
+}
+
+/* 通用 flex */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
 </style>
