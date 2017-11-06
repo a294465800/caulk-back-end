@@ -118,9 +118,6 @@ export default {
   },
 
   created(){
-    this.$api.getReservations('', res => {
-      console.log(res)
-    })
   },
 
   methods: {
