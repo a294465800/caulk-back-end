@@ -53,7 +53,7 @@
 
     <!-- 页码 -->
     <div class="pages">
-      <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" layout="total, prev, pager, next" :total="1000">
+      <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" layout="total, prev, pager, next" :total="count">
       </el-pagination>
     </div>
     <!-- /页码 -->
@@ -69,6 +69,8 @@ export default {
         status: "2"
       },
 
+      count: 0,
+
       statusText: {
         0: "未接单",
         1: "已受理"
@@ -76,46 +78,14 @@ export default {
       currentPage: 1,
 
       //模拟数据
-      reservations: [
-        {
-          id: 1,
-          date: "2016-05-02",
-          name: "王小虎",
-          phone: 18431451451,
-          address: "上海市普陀区金沙江路 1518 弄",
-          status: 1
-        },
-        {
-          id: 2,
-          date: "2016-05-04",
-          name: "王小虎",
-          phone: 18431123421,
-          address: "上海市普陀区金沙江路 1517 弄",
-          status: 0
-        },
-        {
-          id: 3,
-          date: "2016-05-01",
-          name: "王小虎",
-          phone: 18434231451,
-          address: "上海市普陀区金沙江路 1519 弄",
-          status: 0
-        },
-        {
-          id: 4,
-          date: "2016-05-03",
-          name: "王小虎",
-          phone: 18413251451,
-          address: "上海市普陀区金沙江路 1516 弄",
-          status: 1
-        }
-      ]
+      reservations: []
     };
   },
 
   created() {
     this.$api.getReservations("", res => {
       this.reservations = res.data.data;
+      this.count = res.data.count
     });
   },
 
@@ -124,17 +94,28 @@ export default {
      * @param {number} page 当前页码
      * */
     handleCurrentChange(page) {
-      this.$api.getReservations(
-        { state: this.searchForm.status, page: page },
-        res => {
-          this.reservations = res.data.data;
-        }
-      );
+      const state = this.searchForm.status;
+      let searchData = {
+        page: page
+      };
+      if (state != 2) {
+        searchData.state = state;
+      }
+      this.$api.getReservations(searchData, res => {
+        this.reservations = res.data.data;
+      });
     },
 
     //搜索查询
     onSubmit() {
-      this.$api.getReservations({ state: this.searchForm.status }, res => {
+      const state = this.searchForm.status;
+      let searchData = {
+        page: page
+      };
+      if (state != 2) {
+        searchData.state = state;
+      }
+      this.$api.getReservations(searchData, res => {
         this.reservations = res.data.data;
       });
     }
