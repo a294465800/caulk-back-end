@@ -117,6 +117,12 @@ export default {
     };
   },
 
+  created(){
+    this.$api.getReservations('', res => {
+      console.log(res)
+    })
+  },
+
   methods: {
     //新增商品，路由跳转
     commodityAdd() {},
