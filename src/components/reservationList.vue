@@ -109,14 +109,13 @@ export default {
     //搜索查询
     onSubmit() {
       const state = this.searchForm.status;
-      let searchData = {
-        page: page
-      };
+      let searchData = {};
       if (state != 2) {
         searchData.state = state;
       }
       this.$api.getReservations(searchData, res => {
         this.reservations = res.data.data;
+        this.count = res.data.count
       });
     }
   }

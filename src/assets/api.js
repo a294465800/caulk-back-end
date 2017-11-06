@@ -55,10 +55,33 @@ export default {
       })
   },
 
+  /**
+   * 获取预约列表
+   * @param {object} data 
+   * @param {function} cb 
+   */
   getReservations(data, cb){
     axios.get(`${host}reserves`, {
       params: data
     })
+    .then(res => {
+      if ('200' === res.data.code) {
+        typeof cb === 'function' && cb(res)
+      } else {
+        this.APIError(res)
+      }
+    }).catch(error => {
+      this.APIError(error.response)
+    })
+  },
+
+  /**
+   * 添加商品信息 第一步
+   * @param {object} data {title, description, content}
+   * @param {function} cb 
+   */
+  postCommodityInfo(data, cb){
+    axios.post(`${host}info`, data)
     .then(res => {
       if ('200' === res.data.code) {
         typeof cb === 'function' && cb(res)

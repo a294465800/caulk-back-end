@@ -117,12 +117,15 @@ export default {
     };
   },
 
-  created(){
-  },
+  created() {},
 
   methods: {
     //新增商品，路由跳转
-    commodityAdd() {},
+    commodityAdd() {
+      console.log(1)
+      this.$router.push({ name: "commodityAdd", params: { commodity: null } });
+      this.$router.push({ name: "commodityAdd", params: { commodity: null } });
+    },
 
     //删除所有
     commodityDeleteAll() {
