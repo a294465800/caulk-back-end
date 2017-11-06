@@ -111,6 +111,24 @@ export default {
       }).catch(error => {
         this.APIError(error.response)
       })
+  },
+
+  /**
+   * 删除商品 第一步
+   * @param {string} id 
+   * @param {function} cb  回调
+   */
+  deleteCommodityInfo(id, cb) {
+    axios.get(`${host}del/info/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
   }
 
 }

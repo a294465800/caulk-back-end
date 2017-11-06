@@ -43,14 +43,14 @@
       <el-table :data="commodities" border stripe style="min-width: 900px;" @selection-change="handleSelectionChange">
         <!-- <el-table-column type="selection"></el-table-column> -->
         <el-table-column prop="id" label="ID" sortable></el-table-column>
-        <el-table-column prop="name" label="商品名称"></el-table-column>
-        <el-table-column prop="price" label="价格">
+        <el-table-column prop="title" label="商品名称"></el-table-column>
+        <el-table-column label="规格">
           <template slot-scope="scope">
-            <span class="price">{{scope.row.price}} 元</span>
+            <el-button type="text" @click="checkStandard(scope.row.id)">查看规格</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="description" label="描述" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="date" label="创建时间"></el-table-column>
+        <el-table-column prop="created_at" label="创建时间"></el-table-column>
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
             <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button>
@@ -62,7 +62,7 @@
 
     <!-- 页码 -->
     <div class="pages">
-      <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="100" layout="total, prev, pager, next" :total="1000">
+      <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" layout="total, prev, pager, next" :total="count">
       </el-pagination>
     </div>
     <!-- /页码 -->
@@ -82,6 +82,7 @@ export default {
       },
 
       currentPage: 1,
+      count: 0,
 
       //模拟数据
       commodities: [
@@ -118,15 +119,17 @@ export default {
   },
 
   created() {
-    this.$api.getCommodityInfo('', res => {
-      console.log(res)
-    })
+    this.$api.getCommodityInfo("", res => {
+      console.log(res);
+      this.commodities = res.data.data;
+      this.count = res.data.count;
+    });
   },
 
   methods: {
     //新增商品，路由跳转
     commodityAdd() {
-      console.log(1)
+      console.log(1);
       this.$router.push({ name: "commodityAdd", params: { commodity: null } });
       this.$router.push({ name: "commodityAdd", params: { commodity: null } });
     },
@@ -162,6 +165,11 @@ export default {
     // },
 
     /**
+     * 查看规格
+     */
+    checkStandard(id) {},
+
+    /**
      * 列表多选事件
      * @param {array object} selected 当前选中的项
      */
@@ -195,6 +203,13 @@ export default {
      */
     commodityDelete(index, row) {
       console.log(index);
+      this.$api.deleteCommodityInfo(row.id, res => {
+        this.commodities.splice(index, 1);
+        this.$message({
+          type: "success",
+          message: "删除成功"
+        });
+      });
     },
 
     /**
