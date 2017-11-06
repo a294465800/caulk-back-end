@@ -54,21 +54,29 @@ h1 {
 export default {
   data() {
     return {
-      labelPosition: 'top',
+      labelPosition: "top",
       loginInfo: {
-        username: '',
-        password: '',
+        username: "",
+        password: ""
       }
-    }
+    };
   },
   methods: {
     login(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           const login = {
             username: this.loginInfo.username,
-            password: this.loginInfo.password,
-          }
+            password: this.loginInfo.password
+          };
+          this.$api.login(login, res => {
+            sessionStorage.username = this.loginInfo.username;
+            this.$message({
+              type: "success",
+              message: "登录成功"
+            });
+            this.$router.push("/");
+          });
           // this.$api.login(login, () => {
           //   sessionStorage.username = this.loginInfo.username
           //   this.$message({
@@ -77,18 +85,12 @@ export default {
           //   })
           //   this.$router.push('/')
           // })
-          sessionStorage.username = this.loginInfo.username
-          this.$message({
-            type: 'success',
-            message: '登录成功',
-          })
-          this.$router.push('/')
         } else {
-          return false
+          return false;
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
