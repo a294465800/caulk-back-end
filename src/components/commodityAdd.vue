@@ -89,6 +89,7 @@ export default {
               type: "success",
               message: "添加成功"
             });
+            this.$router.push('/list/commodity');
           });
         } else {
           console.log("error submit!!");

@@ -26,11 +26,8 @@
           <!-- <el-button type="danger"  @click="commodityDeleteAll">删除</el-button> -->
       </div>
       <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-        <el-form-item label="订单状态">
-          <el-select v-model="searchForm.status" placeholder="订单状态">
-            <el-option label="未接单" value="0"></el-option>
-            <el-option label="已受理" value="1"></el-option>
-          </el-select>
+        <el-form-item label="商品名称">
+          <el-input v-model="searchForm.title" placeholder="输入商品名称"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch">查询</el-button>
@@ -49,11 +46,16 @@
             <el-button type="text" @click="checkStandard(scope.row.id)">查看规格</el-button>
           </template>
         </el-table-column>
+        <el-table-column label="规格">
+          <template slot-scope="scope">
+            <el-button type="text" @click="checkProduct(scope.row.id)">查看库存</el-button>
+          </template>
+        </el-table-column>
         <el-table-column prop="description" label="描述" show-overflow-tooltip></el-table-column>
         <el-table-column prop="created_at" label="创建时间"></el-table-column>
-        <el-table-column label="操作" width="160">
+        <el-table-column label="操作" width="100">
           <template slot-scope="scope">
-            <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button>
+            <!-- <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button> -->
             <el-button size="small" type="danger"  @click="commodityDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -78,43 +80,14 @@ export default {
 
       //搜索 form
       searchForm: {
-        status: "0"
+        title: ""
       },
 
       currentPage: 1,
       count: 0,
 
-      //模拟数据
-      commodities: [
-        {
-          id: 1,
-          date: "2016-05-02",
-          name: "美缝剂一",
-          price: 23,
-          description: "这是很长的一段描述"
-        },
-        {
-          id: 2,
-          date: "2016-05-04",
-          name: "美缝剂二",
-          price: 111,
-          description: "这是很长的一段描述这是很长的一段描述这是很长的一段描述"
-        },
-        {
-          id: 3,
-          date: "2016-05-01",
-          name: "美缝剂三",
-          price: 423,
-          description: "这是很长的一段描述"
-        },
-        {
-          id: 4,
-          date: "2016-05-03",
-          name: "美缝剂四",
-          price: 24,
-          description: "这是很长的一段描述这是很长的一段描述"
-        }
-      ]
+      //数据
+      commodities: []
     };
   },
 
@@ -174,6 +147,16 @@ export default {
     },
 
     /**
+     * 查看库存
+     */
+    checkProduct(id) {
+      this.$router.push({
+        name: "commoditySpecificList",
+        params: { commodity_id: id }
+      });
+    },
+
+    /**
      * 列表多选事件
      * @param {array object} selected 当前选中的项
      */
@@ -188,7 +171,10 @@ export default {
 
     //搜索内容
     handleSearch() {
-      console.log("search");
+      this.$api.getCommodityInfo({ title: this.searchForm.title }, res => {
+        this.commodities = res.data.data;
+        this.count = res.data.count;
+      });
     },
 
     /**
@@ -206,14 +192,27 @@ export default {
      * @param {object} row 当前行（数据）所有信息
      */
     commodityDelete(index, row) {
-      console.log(index);
-      this.$api.deleteCommodityInfo(row.id, res => {
-        this.commodities.splice(index, 1);
-        this.$message({
-          type: "success",
-          message: "删除成功"
+
+      this.$confirm("此操作将删除该商品, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$api.deleteCommodityInfo(row.id, res => {
+            this.commodities.splice(index, 1);
+            this.$message({
+              type: "success",
+              message: "删除成功"
+            });
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
         });
-      });
     },
 
     /**

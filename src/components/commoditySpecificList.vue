@@ -23,7 +23,7 @@
     <!-- 功能 -->
     <div class="operation">
       <div class="operation-btns">
-          <el-button type="primary" @click="standardAdd">新增库存</el-button>
+          <el-button type="primary" @click="productdAdd">新增库存</el-button>
           <!-- <el-button type="danger"  @click="standardDeleteAll">删除</el-button> -->
       </div>
     </div>
@@ -75,6 +75,8 @@ export default {
       //等待删除
       waittingData: [],
 
+      commodity_id: "",
+
       //搜索 form
       searchForm: {
         status: "0"
@@ -93,15 +95,19 @@ export default {
     this.$api.getProducts(id, res => {
       console.log(res);
       this.commodities = res.data.data;
+      this.commodity_id = id;
       // this.count = res.data.count;
     });
   },
 
   methods: {
-    //新增规格，路由跳转
-    standardAdd() {
+    //新增库存
+    productdAdd() {
       console.log(1);
-      this.$router.push({ name: "commodityAddStandard" });
+      this.$router.push({
+        name: "commoditySpecificEdit",
+        params: { commodity_id: this.commodity_id }
+      });
     },
 
     /**

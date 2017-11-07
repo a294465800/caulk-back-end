@@ -28,7 +28,8 @@
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>商品管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/list/commodity' }">商品列表</el-breadcrumb-item>
-      <el-breadcrumb-item>新增规格</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/list/commodity/standards' }">规格列表</el-breadcrumb-item>
+      <el-breadcrumb-item>规格编辑</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 面包屑导航 -->
 

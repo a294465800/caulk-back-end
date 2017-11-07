@@ -4,7 +4,8 @@ import {
   MessageBox
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-const host = 'http://119.23.255.177:8090/'
+// const host = 'http://119.23.255.177:8090/'
+const host = 'http://192.168.3.22:9000/'
 
 /*
   配置 axios

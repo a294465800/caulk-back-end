@@ -9,6 +9,7 @@ import commodityAdd from '@/components/commodityAdd'
 import commodityAddStandard from '@/components/commodityAddStandard'
 import commodityStandardsList from '@/components/commodityStandardsList'
 import commoditySpecificList from '@/components/commoditySpecificList'
+import commoditySpecificEdit from '@/components/commoditySpecificEdit'
 import commodityOrder from '@/components/commodityOrder'
 import commodityImages from '@/components/commodityImages'
 
@@ -51,6 +52,10 @@ export default new Router({
         path: '/list/commodity/specific',
         name: 'commoditySpecificList',
         component: commoditySpecificList
+      }, {
+        path: '/list/commodity/specific',
+        name: 'commoditySpecificEdit',
+        component: commoditySpecificEdit
       }, {
         path: '/list/order',
         name: 'commodityOrder',

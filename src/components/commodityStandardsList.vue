@@ -15,6 +15,7 @@
     <el-breadcrumb class="breadcrumb" separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/list/commodity' }">商品列表</el-breadcrumb-item>
       <el-breadcrumb-item>规格列表</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 面包屑导航 -->
@@ -22,7 +23,7 @@
     <!-- 功能 -->
     <div class="operation">
       <div class="operation-btns">
-          <el-button type="primary" @click="standardAdd">新增</el-button>
+          <el-button type="primary" @click="standardAdd">新增规格</el-button>
           <!-- <el-button type="danger"  @click="standardDeleteAll">删除</el-button> -->
       </div>
     </div>
@@ -39,11 +40,11 @@
           </template>
         </el-table-column>
         <el-table-column prop="created_at" label="创建时间"></el-table-column>
-        <el-table-column label="查看商品">
+        <!-- <el-table-column label="查看商品">
           <template slot-scope="scope">
             <el-button size="small" type="text"  @click="addCommodity(scope.row.commodity_id)">查看商品</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <!-- <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button> -->
@@ -126,13 +127,13 @@ export default {
     // },
 
     //添加库存
-    addCommodity(id) {
-      console.log(id);
-      this.$router.push({
-        name: "commoditySpecificList",
-        params: { commodity_id: id }
-      });
-    },
+    // addCommodity(id) {
+    //   console.log(id);
+    //   this.$router.push({
+    //     name: "commoditySpecificList",
+    //     params: { commodity_id: id }
+    //   });
+    // },
 
     /**
      * 行删除
