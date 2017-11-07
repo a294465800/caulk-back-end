@@ -183,6 +183,60 @@ export default {
       }).catch(error => {
         this.APIError(error.response)
       })
+  },
+
+  /**
+   * 获取商品列表 第三步
+   * @param {string} id commodity_id
+   * @param {function} cb 回调
+   */
+  getProducts(id, cb) {
+    axios.get(`${host}products/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 添加新库存 第三步
+   * @param {object} data {(id), commodity_id, feature, price, stock}
+   * @param {*} cb 
+   */
+  postProduct(data, cb) {
+    axios.post(`${host}standard`, data)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 删除库存商品 第三步
+   * @param {string} id 
+   * @param {function} cb 
+   */
+  deleteProduct(id, cb) {
+    axios.get(`${host}del/product/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
   }
 
 }

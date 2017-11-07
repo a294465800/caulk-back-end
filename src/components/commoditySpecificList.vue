@@ -15,38 +15,44 @@
     <el-breadcrumb class="breadcrumb" separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-      <el-breadcrumb-item>规格列表</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/list/commodity' }">商品列表</el-breadcrumb-item>
+      <el-breadcrumb-item>库存列表</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 面包屑导航 -->
 
     <!-- 功能 -->
     <div class="operation">
       <div class="operation-btns">
-          <el-button type="primary" @click="standardAdd">新增</el-button>
+          <el-button type="primary" @click="standardAdd">新增库存</el-button>
           <!-- <el-button type="danger"  @click="standardDeleteAll">删除</el-button> -->
       </div>
     </div>
     <!-- /功能 -->
 
     <div class="tale-list">
-      <el-table :data="standards" border stripe style="min-width: 900px;" @selection-change="handleSelectionChange">
+      <el-table :data="commodities" border stripe style="min-width: 900px;" @selection-change="handleSelectionChange">
         <!-- <el-table-column type="selection"></el-table-column> -->
         <el-table-column prop="id" label="ID" sortable></el-table-column>
-        <el-table-column prop="title" label="规格名"></el-table-column>
+        <el-table-column prop="title" label="商品名称"></el-table-column>
         <el-table-column prop="attrs" label="具体规格" show-overflow-tooltip>
           <template slot-scope="scope">
             <span v-for="(tag, index) in scope.row.attrs" :key="index" style="margin-right: 5px;">{{tag}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="created_at" label="创建时间"></el-table-column>
-        <el-table-column label="查看商品">
+        <el-table-column prop="price" label="价格">
           <template slot-scope="scope">
-            <el-button size="small" type="text"  @click="addCommodity(scope.row.commodity_id)">查看商品</el-button>
+            <span class="price">{{scope.row.price}}元</span>
           </template>
         </el-table-column>
+        <el-table-column prop="stock" label="库存">
+          <template slot-scope="scope">
+            <span>{{scope.row.stock}}件</span>
+          </template>        
+        </el-table-column>
+        <el-table-column prop="created_at" label="创建时间"></el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
-            <!-- <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button> -->
+            <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button>
             <el-button size="small" type="danger"  @click="standardDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -78,15 +84,15 @@ export default {
       count: 0,
 
       //模拟数据
-      standards: []
+      commodities: []
     };
   },
 
   created() {
     const id = this.$route.params.commodity_id;
-    this.$api.getStandards(id, res => {
+    this.$api.getProducts(id, res => {
       console.log(res);
-      this.standards = res.data.data;
+      this.commodities = res.data.data;
       // this.count = res.data.count;
     });
   },
@@ -121,17 +127,13 @@ export default {
      * @param {number} index 当前行（数据）索引
      * @param {object} row 当前行（数据）所有信息
      */
-    // commodityEdit(index, row) {
-    //   console.log(index);
-    // },
+    commodityEdit(index, row) {
+      console.log(index);
+    },
 
     //添加库存
     addCommodity(id) {
       console.log(id);
-      this.$router.push({
-        name: "commoditySpecificList",
-        params: { commodity_id: id }
-      });
     },
 
     /**
@@ -141,8 +143,8 @@ export default {
      */
     standardDelete(index, row) {
       console.log(index);
-      this.$api.deleteStandards(row.id, res => {
-        this.standards.splice(index, 1);
+      this.$api.deletecommodities(row.id, res => {
+        this.commodities.splice(index, 1);
         this.$message({
           type: "success",
           message: "删除成功"
