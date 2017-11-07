@@ -69,6 +69,7 @@ export default {
     return {
       //等待删除
       waittingData: [],
+      commodity_id: "",
 
       //搜索 form
       searchForm: {
@@ -84,10 +85,10 @@ export default {
   },
 
   created() {
-    const id = this.$route.params.commodity_id;
+    const id = sessionStorage.commodity_id;
     this.$api.getStandards(id, res => {
-      console.log(res);
       this.standards = res.data.data;
+      this.commodity_id = id;
       // this.count = res.data.count;
     });
   },
@@ -95,7 +96,6 @@ export default {
   methods: {
     //新增规格，路由跳转
     standardAdd() {
-      console.log(1);
       this.$router.push({ name: "commodityAddStandard" });
     },
 
@@ -109,12 +109,11 @@ export default {
         temp.push(it.id);
       }
       this.waittingData = temp;
-      console.log(this.waittingData);
     },
 
     //搜索内容
     handleSearch() {
-      console.log("search");
+      // console.log("search");
     },
 
     /**
@@ -141,14 +140,26 @@ export default {
      * @param {object} row 当前行（数据）所有信息
      */
     standardDelete(index, row) {
-      console.log(index);
-      this.$api.deleteStandards(row.id, res => {
-        this.standards.splice(index, 1);
-        this.$message({
-          type: "success",
-          message: "删除成功"
+      this.$confirm("此操作将删除该种规格, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$api.deleteStandards(row.id, res => {
+            this.standards.splice(index, 1);
+            this.$message({
+              type: "success",
+              message: "删除成功"
+            });
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
         });
-      });
     },
 
     /**
@@ -156,7 +167,6 @@ export default {
      * @param {number} page 当前页码
      * */
     handleCurrentChange(page) {
-      console.log(page);
     }
   }
 };

@@ -91,11 +91,9 @@ export default {
   },
 
   created() {
-    const id = this.$route.params.commodity_id;
+    const id = sessionStorage.commodity_id;
     this.$api.getProducts(id, res => {
-      console.log(res);
       this.commodities = res.data.data;
-      this.commodity_id = id;
       // this.count = res.data.count;
     });
   },
@@ -103,11 +101,7 @@ export default {
   methods: {
     //新增库存
     productdAdd() {
-      console.log(1);
-      this.$router.push({
-        name: "commoditySpecificEdit",
-        params: { commodity_id: this.commodity_id }
-      });
+      this.$router.push({ name: "commoditySpecificEdit" });
     },
 
     /**

@@ -93,7 +93,6 @@ export default {
 
   created() {
     this.$api.getCommodityInfo("", res => {
-      console.log(res);
       this.commodities = res.data.data;
       this.count = res.data.count;
     });
@@ -102,7 +101,6 @@ export default {
   methods: {
     //新增商品，路由跳转
     commodityAdd() {
-      console.log(1);
       this.$router.push({ name: "commodityAdd", params: { commodity: null } });
     },
 
@@ -140,20 +138,16 @@ export default {
      * 查看规格
      */
     checkStandard(id) {
-      this.$router.push({
-        name: "commodityStandardsList",
-        params: { commodity_id: id }
-      });
+      sessionStorage.commodity_id = id;
+      this.$router.push({ name: "commodityStandardsList" });
     },
 
     /**
      * 查看库存
      */
     checkProduct(id) {
-      this.$router.push({
-        name: "commoditySpecificList",
-        params: { commodity_id: id }
-      });
+      sessionStorage.commodity_id = id;
+      this.$router.push({ name: "commoditySpecificList" });
     },
 
     /**
@@ -166,7 +160,6 @@ export default {
         temp.push(it.id);
       }
       this.waittingData = temp;
-      console.log(this.waittingData);
     },
 
     //搜索内容
@@ -182,9 +175,9 @@ export default {
      * @param {number} index 当前行（数据）索引
      * @param {object} row 当前行（数据）所有信息
      */
-    commodityEdit(index, row) {
-      console.log(index);
-    },
+    // commodityEdit(index, row) {
+    //   console.log(index);
+    // },
 
     /**
      * 行删除
@@ -192,7 +185,6 @@ export default {
      * @param {object} row 当前行（数据）所有信息
      */
     commodityDelete(index, row) {
-
       this.$confirm("此操作将删除该商品, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -220,7 +212,6 @@ export default {
      * @param {number} page 当前页码
      * */
     handleCurrentChange(page) {
-      console.log(page);
     }
   }
 };
