@@ -6,9 +6,11 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import api from '@/assets/api.js'
+import VueQuillEditor from 'vue-quill-editor'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.use(VueQuillEditor)
 Vue.prototype.$api = api
 
 /**

@@ -1,7 +1,20 @@
 <style scoped>
 .form-wrap {
-  width: 600px;
-  margin: 0 auto;
+  width: 100%;
+}
+
+.ql-container .ql-editor {
+  min-height: 20em;
+  padding-bottom: 1em;
+  max-height: 25em;
+}
+
+.html {
+  height: 9em;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-top: none;
+  resize: vertical;
 }
 </style>
 
@@ -25,6 +38,13 @@
           <el-input type="textarea" v-model="infoForm.description"></el-input>
         </el-form-item>
         <el-form-item>
+          <div class="quill-editor-example">
+        <!-- quill-editor -->
+            <quill-editor ref="myTextEditor" v-model="infoForm.content" :options="editorOption"></quill-editor>
+          <div class="html ql-editor" v-html="infoForm.content"></div>
+      </div>
+        </el-form-item>
+        <el-form-item>
           <el-button type="primary" @click="submitForm('infoForm')" style="width: 100%;">确定</el-button>
         </el-form-item>
       </el-form>
@@ -39,7 +59,11 @@ export default {
       infoForm: {
         title: "",
         description: "",
-        content: "111"
+        content: ""
+      },
+
+      editorOption: {
+        placeholder: "在这里输入，下面会同步显示..."
       },
 
       rules: {
@@ -47,6 +71,12 @@ export default {
         description: [{ required: true, message: "请输入商品描述", trigger: "blur" }]
       }
     };
+  },
+
+  computed: {
+    editor() {
+      return this.$refs.myTextEditor.quill;
+    }
   },
 
   methods: {

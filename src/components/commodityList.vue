@@ -167,7 +167,12 @@ export default {
     /**
      * 查看规格
      */
-    checkStandard(id) {},
+    checkStandard(id) {
+      this.$router.push({
+        name: "commodityAddStandard",
+        params: { standard_id: id }
+      });
+    },
 
     /**
      * 列表多选事件
