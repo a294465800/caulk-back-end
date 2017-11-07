@@ -73,8 +73,6 @@ export default {
   },
 
   created() {
-    const id = this.$route.params.standard_id;
-    console.log(id, this.$route);
   },
 
   methods: {

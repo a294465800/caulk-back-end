@@ -129,6 +129,60 @@ export default {
       }).catch(error => {
         this.APIError(error.response)
       })
+  },
+
+  /**
+   * 新增商品规格
+   * @param {object} data {title, attrs, commodity_id}
+   * @param {function} cb 
+   */
+  postStandards(data, cb) {
+    axios.post(`${host}standard`, data)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 获取对应商品规格
+   * @param {string} id commodity_id
+   * @param {function} cb 回调
+   */
+  getStandards(id, cb) {
+    axios.get(`${host}standards/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 删除对应商品规格
+   * @param {string} id id
+   * @param {function} cb 回调
+   */
+  deleteStandards(id, cb) {
+    axios.get(`${host}del/standard/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
   }
 
 }

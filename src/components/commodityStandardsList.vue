@@ -15,46 +15,34 @@
     <el-breadcrumb class="breadcrumb" separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-      <el-breadcrumb-item>商品列表</el-breadcrumb-item>
+      <el-breadcrumb-item>规格列表</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 面包屑导航 -->
 
     <!-- 功能 -->
     <div class="operation">
       <div class="operation-btns">
-          <el-button type="primary" @click="commodityAdd">新增</el-button>
-          <!-- <el-button type="danger"  @click="commodityDeleteAll">删除</el-button> -->
+          <el-button type="primary" @click="standardAdd">新增</el-button>
+          <!-- <el-button type="danger"  @click="standardDeleteAll">删除</el-button> -->
       </div>
-      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-        <el-form-item label="订单状态">
-          <el-select v-model="searchForm.status" placeholder="订单状态">
-            <el-option label="未接单" value="0"></el-option>
-            <el-option label="已受理" value="1"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="handleSearch">查询</el-button>
-        </el-form-item>
-      </el-form>
     </div>
     <!-- /功能 -->
 
     <div class="tale-list">
-      <el-table :data="commodities" border stripe style="min-width: 900px;" @selection-change="handleSelectionChange">
+      <el-table :data="standards" border stripe style="min-width: 900px;" @selection-change="handleSelectionChange">
         <!-- <el-table-column type="selection"></el-table-column> -->
         <el-table-column prop="id" label="ID" sortable></el-table-column>
-        <el-table-column prop="title" label="商品名称"></el-table-column>
-        <el-table-column label="规格">
+        <el-table-column prop="title" label="规格名"></el-table-column>
+        <el-table-column prop="attrs" label="具体规格" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-button type="text" @click="checkStandard(scope.row.id)">查看规格</el-button>
+            <span v-for="(tag, index) in scope.row.attrs" :key="index" style="margin-right: 5px;">{{tag}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="description" label="描述" show-overflow-tooltip></el-table-column>
         <el-table-column prop="created_at" label="创建时间"></el-table-column>
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
-            <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button>
-            <el-button size="small" type="danger"  @click="commodityDelete(scope.$index, scope.row)">删除</el-button>
+            <!-- <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button> -->
+            <el-button size="small" type="danger"  @click="standardDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -85,7 +73,7 @@ export default {
       count: 0,
 
       //模拟数据
-      commodities: [
+      standards: [
         {
           id: 1,
           date: "2016-05-02",
@@ -119,58 +107,19 @@ export default {
   },
 
   created() {
-    this.$api.getCommodityInfo("", res => {
+    const id = this.$route.params.commodity_id
+    this.$api.getStandards(id, res => {
       console.log(res);
-      this.commodities = res.data.data;
-      this.count = res.data.count;
+      this.standards = res.data.data;
+      // this.count = res.data.count;
     });
   },
 
   methods: {
-    //新增商品，路由跳转
-    commodityAdd() {
+    //新增规格，路由跳转
+    standardAdd() {
       console.log(1);
-      this.$router.push({ name: "commodityAdd", params: { commodity: null } });
-    },
-
-    //删除所有
-    // commodityDeleteAll() {
-    //   const ids = this.waittingData;
-    //   if (ids.length) {
-    //     console.log(ids);
-    //     this.$confirm("此操作将删除选中商品, 是否继续?", "提示", {
-    //       confirmButtonText: "确定",
-    //       cancelButtonText: "取消",
-    //       type: "warning"
-    //     })
-    //       .then(() => {
-    //         this.$message({
-    //           type: "success",
-    //           message: "删除成功!"
-    //         });
-    //       })
-    //       .catch(() => {
-    //         this.$message({
-    //           type: "info",
-    //           message: "已取消删除"
-    //         });
-    //       });
-    //   } else {
-    //     this.$message({
-    //       message: "请先选择一项",
-    //       type: "warning"
-    //     });
-    //   }
-    // },
-
-    /**
-     * 查看规格
-     */
-    checkStandard(id) {
-      this.$router.push({
-        name: "commodityStandardsList",
-        params: { commodity_id: id }
-      });
+      this.$router.push({ name: "commodityAddStandard" });
     },
 
     /**
@@ -196,19 +145,19 @@ export default {
      * @param {number} index 当前行（数据）索引
      * @param {object} row 当前行（数据）所有信息
      */
-    commodityEdit(index, row) {
-      console.log(index);
-    },
+    // commodityEdit(index, row) {
+    //   console.log(index);
+    // },
 
     /**
      * 行删除
      * @param {number} index 当前行（数据）索引
      * @param {object} row 当前行（数据）所有信息
      */
-    commodityDelete(index, row) {
+    standardDelete(index, row) {
       console.log(index);
-      this.$api.deleteCommodityInfo(row.id, res => {
-        this.commodities.splice(index, 1);
+      this.$api.deleteStandards(row.id, res => {
+        this.standards.splice(index, 1);
         this.$message({
           type: "success",
           message: "删除成功"
