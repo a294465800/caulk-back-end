@@ -53,7 +53,7 @@ export default new Router({
         name: 'commoditySpecificList',
         component: commoditySpecificList
       }, {
-        path: '/list/commodity/specific',
+        path: '/list/commodity/specific/edit',
         name: 'commoditySpecificEdit',
         component: commoditySpecificEdit
       }, {

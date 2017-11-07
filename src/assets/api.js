@@ -33,7 +33,7 @@ export default {
    */
   APIError(error) {
     console.log(error)
-    MessageBox.alert(error ? error.data.return_msg : error, '出错啦', {
+    MessageBox.alert(error ? error.data.msg : error, '出错啦', {
       confirmButtonText: '确定',
     })
   },
@@ -210,7 +210,7 @@ export default {
    * @param {*} cb 
    */
   postProduct(data, cb) {
-    axios.post(`${host}standard`, data)
+    axios.post(`${host}product`, data)
       .then(res => {
         if ('200' === res.data.code) {
           typeof cb === 'function' && cb(res)

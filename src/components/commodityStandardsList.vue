@@ -33,6 +33,7 @@
       <el-table :data="standards" border stripe style="min-width: 900px;" @selection-change="handleSelectionChange">
         <!-- <el-table-column type="selection"></el-table-column> -->
         <el-table-column prop="id" label="ID" sortable></el-table-column>
+        <el-table-column prop="commodity_title" label="商品名称"></el-table-column>
         <el-table-column prop="title" label="规格名"></el-table-column>
         <el-table-column prop="attrs" label="具体规格" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -40,11 +41,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="created_at" label="创建时间"></el-table-column>
-        <!-- <el-table-column label="查看商品">
-          <template slot-scope="scope">
-            <el-button size="small" type="text"  @click="addCommodity(scope.row.commodity_id)">查看商品</el-button>
-          </template>
-        </el-table-column> -->
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <!-- <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button> -->
@@ -125,15 +121,6 @@ export default {
     //   console.log(index);
     // },
 
-    //添加库存
-    // addCommodity(id) {
-    //   console.log(id);
-    //   this.$router.push({
-    //     name: "commoditySpecificList",
-    //     params: { commodity_id: id }
-    //   });
-    // },
-
     /**
      * 行删除
      * @param {number} index 当前行（数据）索引
@@ -166,8 +153,7 @@ export default {
      * 页码事件
      * @param {number} page 当前页码
      * */
-    handleCurrentChange(page) {
-    }
+    handleCurrentChange(page) {}
   }
 };
 </script>
