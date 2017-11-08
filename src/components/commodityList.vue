@@ -193,6 +193,7 @@ export default {
         .then(() => {
           this.$api.deleteCommodityInfo(row.id, res => {
             this.commodities.splice(index, 1);
+            this.count--
             this.$message({
               type: "success",
               message: "删除成功"

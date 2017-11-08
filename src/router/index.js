@@ -20,6 +20,7 @@ import companyImages from '@/components/companyImages'
 import advertImgAdd from '@/components/advertImgAdd'
 import companyList from '@/components/companyList'
 import companyEdit from '@/components/companyEdit'
+import masterList from '@/components/masterList'
 
 Vue.use(Router)
 
@@ -113,6 +114,10 @@ export default new Router({
         path: '/company/edit',
         name: 'companyEdit',
         component: companyEdit
+      }, {
+        path: '/list/master',
+        name: 'masterList',
+        component: masterList
       }]
     }
   ]

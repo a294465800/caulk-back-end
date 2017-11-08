@@ -51,10 +51,10 @@
     </div>
 
     <!-- 页码 -->
-    <div class="pages">
+    <!-- <div class="pages">
       <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" layout="total, prev, pager, next" :total="count">
       </el-pagination>
-    </div>
+    </div> -->
     <!-- /页码 -->
   </section>
 </template>
@@ -72,8 +72,8 @@ export default {
         status: "0"
       },
 
-      currentPage: 1,
-      count: 0,
+      // currentPage: 1,
+      // count: 0,
 
       //模拟数据
       standards: []

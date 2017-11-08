@@ -1,6 +1,6 @@
 <style scoped>
 .img-item {
-  width: 250px;
+  /* width: 250px; */
   height: 250px;
   border-radius: 5px;
   margin: 20px;
@@ -8,7 +8,7 @@
 }
 
 .img-item img {
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   border-radius: 5px;
 }

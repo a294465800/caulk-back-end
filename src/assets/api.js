@@ -423,6 +423,46 @@ export default {
       }).catch(error => {
         this.APIError(error.response)
       })
-  }
+  },
+
+  /**
+   * 获取师傅列表
+   * @param {object} data {state, (limit), (page)}
+   * @param {function} cb 回调
+   */
+  getApplies(data, cb) {
+    axios.get(`${host}applies`, {
+        params: data
+      })
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 获取师傅列表
+   * @param {object} data {state}
+   * @param {function} cb 回调
+   */
+  postApply(id, data, cb) {
+    axios.get(`${host}review/apply/${id}`, {
+        params: data
+      })
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
 
 }

@@ -56,6 +56,10 @@ body {
   color: #1aad19;
 }
 
+.normal {
+  color: #666;
+}
+
 .price {
   color: #fa5555;
 }
