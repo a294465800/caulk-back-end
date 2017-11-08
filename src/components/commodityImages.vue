@@ -115,7 +115,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$api.deleteProductImages(id, res => {
+          this.$api.deleteAdvert(id, res => {
             this.images.splice(index, 1);
             this.$message({
               type: "success",

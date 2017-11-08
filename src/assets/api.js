@@ -373,6 +373,24 @@ export default {
   },
 
   /**
+   * 删除广告图片
+   * @param {string} id 
+   * @param {function} cb 
+   */
+  deleteAdvert(id, cb) {
+    axios.get(`${host}del/advert/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
    * 获取公司信息
    * @param {function} cb 
    */
