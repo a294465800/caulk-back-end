@@ -24,35 +24,56 @@
 
     <!-- 功能 -->
     <div class="operation">
-      <el-input placeholder="请输入查询内容" v-model="searchForm.input" class="input-with-select" @keypress.enter.native="handleSearch">
-        <el-select v-model="searchForm.select" slot="prepend" placeholder="请选择">
-          <el-option label="商品ID" value="1"></el-option>
-          <el-option label="用户姓名" value="2"></el-option>
-        </el-select>
-        <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
-      </el-input>
+      <el-form :inline="true" :model="searchForm" style="margin-bottom: 20px;">
+        <el-form-item label="订单状态">
+          <el-select v-model="searchForm.state" placeholder="订单状态" @change="searchState">
+            <el-option label="全部" value=""></el-option>
+            <!-- <el-option label="未付款" value="0"></el-option> -->
+            <el-option label="待发货" value="1"></el-option>
+            <el-option label="待收货" value="2"></el-option>
+            <el-option label="已完成" value="3"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <el-form :inline="true" :model="searchForm">
+        <el-form-item label="订单号">
+          <el-input v-model="searchForm.number" placeholder="输入订单号"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSearch">查询</el-button>
+        </el-form-item>
+      </el-form>
     </div>
     <!-- /功能 -->
 
     <div class="tale-list">
       <el-table :data="orders" border stripe style="min-width: 900px;">
-        <el-table-column prop="id" label="ID" sortable></el-table-column>
-        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="number" label="订单号" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-button type="text" @click="checkOrder(scope.row.id)">{{scope.row.number}}</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="username" label="姓名"></el-table-column>
         <el-table-column prop="phone" label="联系方式"></el-table-column>
-        <el-table-column prop="commodity" label="购买商品"></el-table-column>
+        <el-table-column prop="name" label="购买商品"></el-table-column>
         <el-table-column prop="price" label="购买价格">
           <template slot-scope="scope">
             <span class="price">{{scope.row.price}} 元</span>
           </template>
         </el-table-column>
-        <el-table-column prop="date" label="日期"></el-table-column>
+        <el-table-column prop="created_at" label="日期"></el-table-column>
         <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="state" label="状态">
+          <template slot-scope="scope">
+            <span>{{stateText[scope.row.state]}}</span>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
 
     <!-- 页码 -->
     <div class="pages">
-      <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="100" layout="total, prev, pager, next" :total="1000">
+      <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" layout="total, prev, pager, next" :total="count">
       </el-pagination>
     </div>
     <!-- /页码 -->
@@ -63,67 +84,68 @@
 export default {
   data() {
     return {
+      stateText: {
+        0: "未付款",
+        1: "待发货",
+        2: "待收货",
+        3: "已完成"
+      },
+
       //搜索 form
       searchForm: {
-        select: "1",
-        input: ""
+        state: "",
+        number: ""
       },
 
       currentPage: 1,
+      count: 0,
 
       //模拟数据
-      orders: [
-        {
-          id: 1,
-          date: "2016-05-02",
-          name: "王小虎",
-          phone: 18431451451,
-          address: "上海市普陀区金沙江路 1518 弄",
-          commodity: "美缝剂一",
-          price: 34
-        },
-        {
-          id: 2,
-          date: "2016-05-04",
-          name: "王小虎",
-          phone: 18431123421,
-          address: "上海市普陀区金沙江路 1517 弄",
-          commodity: "美缝剂一",
-          price: 424
-        },
-        {
-          id: 3,
-          date: "2016-05-01",
-          name: "王小虎",
-          phone: 18434231451,
-          address: "上海市普陀区金沙江路 1519 弄",
-          commodity: "美缝剂三",
-          price: 324
-        },
-        {
-          id: 4,
-          date: "2016-05-03",
-          name: "王小虎",
-          phone: 18413251451,
-          address: "上海市普陀区金沙江路 1516 弄",
-          commodity: "美缝剂一",
-          price: 124
-        }
-      ]
+      orders: []
     };
   },
 
+  created() {
+    this.$api.getOrders("", res => {
+      this.orders = res.data.data;
+      this.count = res.data.count;
+    });
+  },
+
   methods: {
-    //搜索
+    //查看单条订单
+    checkOrder(id) {
+      this.$router.push({ name: "commodityOrderOne", params: { id } });
+    },
+
+    //状态搜索
+    searchState(e) {
+      this.$api.getOrders({ state: e }, res => {
+        this.orders = res.data.data;
+        this.count = res.data.count;
+      });
+    },
+
+    //单号搜索
     handleSearch() {
-      console.log(1);
+      this.$api.getOrders({ number: this.searchForm.number }, res => {
+        this.orders = res.data.data;
+        this.count = res.data.count;
+      });
     },
 
     /**
      * @param {number} page 当前页码
      * */
     handleCurrentChange(page) {
-      console.log(page);
+      const getData = Object.assign(
+        { state: this.searchForm.state },
+        { page: page }
+      );
+      this.$api.getOrders(getData, res => {
+        this.orders = res.data.data;
+        this.count = res.data.count;
+      });
     }
   }
 };

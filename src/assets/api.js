@@ -238,6 +238,44 @@ export default {
       }).catch(error => {
         this.APIError(error.response)
       })
+  },
+
+  /**
+   * 获取所有订单
+   * @param {object} data {(number),(state),(page),(limit)}
+   * @param {function} cb 回调
+   */
+  getOrders(data, cb) {
+    axios.get(`${host}orders`, {
+        params: data
+      })
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 获取单条订单信息
+   * @param {string} id 
+   * @param {function} cb 回调
+   */
+  getOrder(id, cb) {
+    axios.get(`${host}order/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
   }
 
 }

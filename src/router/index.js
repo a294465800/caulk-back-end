@@ -11,6 +11,7 @@ import commodityStandardsList from '@/components/commodityStandardsList'
 import commoditySpecificList from '@/components/commoditySpecificList'
 import commoditySpecificEdit from '@/components/commoditySpecificEdit'
 import commodityOrder from '@/components/commodityOrder'
+import commodityOrderOne from '@/components/commodityOrderOne'
 import commodityImages from '@/components/commodityImages'
 
 Vue.use(Router)
@@ -60,6 +61,10 @@ export default new Router({
         path: '/list/order',
         name: 'commodityOrder',
         component: commodityOrder
+      }, {
+        path: '/list/order/one',
+        name: 'commodityOrderOne',
+        component: commodityOrderOne
       }, {
         path: '/list/commodity/images',
         name: 'commodityImages',

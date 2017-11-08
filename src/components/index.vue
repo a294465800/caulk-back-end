@@ -96,7 +96,17 @@ body > .el-container {
           <el-menu-item-group>
             <el-menu-item index="/list/commodity">商品列表</el-menu-item>
             <el-menu-item index="/list/order">成交订单</el-menu-item>
-            <el-menu-item index="/list/commodity/images">商品首页轮播</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="/images">
+          <template slot="title">
+            <i class="el-icon-picture"></i>
+            <span>图片管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="/list/commodity/images">首页轮播</el-menu-item>
+            <el-menu-item index="/list/commodity/images">商品轮播</el-menu-item>
+            <el-menu-item index="/list/commodity/images">公司轮播</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-menu-item index="/company">
@@ -132,7 +142,7 @@ export default {
   },
 
   created() {
-    this.activeNav = this.$route.path
+    this.activeNav = this.$route.path;
     // console.log(this.$route.path);
   },
   methods: {

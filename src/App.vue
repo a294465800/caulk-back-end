@@ -116,4 +116,8 @@ body {
   font-size: 40px;
   line-height: 250px;
 }
+
+.el-steps {
+  justify-content: center;
+}
 </style>

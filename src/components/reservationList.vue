@@ -20,16 +20,13 @@
 
     <!-- 功能 -->
     <div class="operation">
-      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+      <el-form :inline="true" :model="searchForm">
         <el-form-item label="订单状态">
-          <el-select v-model="searchForm.status" placeholder="订单状态">
+          <el-select v-model="searchForm.status" placeholder="订单状态" @change="onSubmit">
             <el-option label="全部" value="2"></el-option>
             <el-option label="未接单" value="0"></el-option>
             <el-option label="已受理" value="1"></el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -85,7 +82,7 @@ export default {
   created() {
     this.$api.getReservations("", res => {
       this.reservations = res.data.data;
-      this.count = res.data.count
+      this.count = res.data.count;
     });
   },
 
@@ -107,15 +104,17 @@ export default {
     },
 
     //搜索查询
-    onSubmit() {
-      const state = this.searchForm.status;
+    onSubmit(e) {
+      console.log(e)
+      // const state = this.searchForm.status;
+      const state = e;
       let searchData = {};
       if (state != 2) {
         searchData.state = state;
       }
       this.$api.getReservations(searchData, res => {
         this.reservations = res.data.data;
-        this.count = res.data.count
+        this.count = res.data.count;
       });
     }
   }
