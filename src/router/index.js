@@ -10,9 +10,13 @@ import commodityAddStandard from '@/components/commodityAddStandard'
 import commodityStandardsList from '@/components/commodityStandardsList'
 import commoditySpecificList from '@/components/commoditySpecificList'
 import commoditySpecificEdit from '@/components/commoditySpecificEdit'
+import commoditySpecificImages from '@/components/commoditySpecificImages'
+import commoditySpecificAddImg from '@/components/commoditySpecificAddImg'
 import commodityOrder from '@/components/commodityOrder'
 import commodityOrderOne from '@/components/commodityOrderOne'
 import commodityImages from '@/components/commodityImages'
+import indexImages from '@/components/indexImages'
+import companyImages from '@/components/companyImages'
 
 Vue.use(Router)
 
@@ -58,6 +62,14 @@ export default new Router({
         name: 'commoditySpecificEdit',
         component: commoditySpecificEdit
       }, {
+        path: '/list/commodity/specific/images',
+        name: 'commoditySpecificImages',
+        component: commoditySpecificImages
+      }, {
+        path: '/list/commodity/specific/images/add',
+        name: 'commoditySpecificAddImg',
+        component: commoditySpecificAddImg
+      }, {
         path: '/list/order',
         name: 'commodityOrder',
         component: commodityOrder
@@ -69,6 +81,14 @@ export default new Router({
         path: '/list/commodity/images',
         name: 'commodityImages',
         component: commodityImages
+      }, {
+        path: '/index/images',
+        name: 'indexImages',
+        component: indexImages
+      }, {
+        path: '/company/images',
+        name: 'companyImages',
+        component: companyImages
       }]
     }
   ]

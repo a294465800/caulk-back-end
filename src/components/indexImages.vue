@@ -7,21 +7,21 @@
     <!-- 面包屑导航 -->
     <el-breadcrumb class="breadcrumb" separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>商品轮播</el-breadcrumb-item>
+      <el-breadcrumb-item>首页轮播</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 面包屑导航 -->
 
     <!-- 图片列表 -->
     <div class="img-list">
-      <el-upload action="https://jsonplaceholder.typicode.com/posts/" list-type="picture-card" accept="image/jpeg,image/png,image/jpg" :class="{'hide':imagesLimit}" :file-list="imgLists" :on-preview="handlePictureCardPreview" :before-upload="beforeImagesUpload" :on-remove="handleRemove">
+      <el-upload :action="host" name="image" list-type="picture-card" accept="image/jpeg,image/png,image/jpg" :class="{'hide':imagesLimit}" :file-list="imgLists" :on-preview="handlePictureCardPreview" :before-upload="beforeImagesUpload" :on-remove="handleRemove">
         <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog width="40%" :visible="dialogVisible" @close="closeDialog" style="text-align: center;">
         <img style="max-width: 100%;" :src="dialogImageUrl" alt="图片">
       </el-dialog>
     </div>
-    <!-- /图片列表 -->
     <el-button type="primary">确定提交<i class="el-icon-upload el-icon--right"></i></el-button>
+    <!-- /图片列表 -->
   </section>
 </template>
 
@@ -29,6 +29,7 @@
 export default {
   data() {
     return {
+      host: "",
       imgLists: [
         {
           name: "food.jpeg",
@@ -54,6 +55,10 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false
     };
+  },
+
+  created() {
+    this.host = this.$api.host + "upload";
   },
 
   computed: {

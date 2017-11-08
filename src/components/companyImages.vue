@@ -7,13 +7,13 @@
     <!-- 面包屑导航 -->
     <el-breadcrumb class="breadcrumb" separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>商品轮播</el-breadcrumb-item>
+      <el-breadcrumb-item>公司轮播</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 面包屑导航 -->
 
     <!-- 图片列表 -->
     <div class="img-list">
-      <el-upload action="https://jsonplaceholder.typicode.com/posts/" list-type="picture-card" accept="image/jpeg,image/png,image/jpg" :class="{'hide':imagesLimit}" :file-list="imgLists" :on-preview="handlePictureCardPreview" :before-upload="beforeImagesUpload" :on-remove="handleRemove">
+      <el-upload action="https://jsonplaceholder.typicode.com/posts/" name="image" list-type="picture-card" accept="image/jpeg,image/png,image/jpg" :class="{'hide':imagesLimit}" :file-list="imgLists" :on-preview="handlePictureCardPreview" :before-upload="beforeImagesUpload" :on-remove="handleRemove">
         <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog width="40%" :visible="dialogVisible" @close="closeDialog" style="text-align: center;">

@@ -49,6 +49,11 @@
             <span>{{scope.row.stock}}件</span>
           </template>        
         </el-table-column>
+        <el-table-column label="商品图片">
+          <template slot-scope="scope">
+            <el-button type="text" @click="checkProductImg(scope.row.id)">查看图片</el-button>
+          </template>        
+        </el-table-column>
         <el-table-column prop="created_at" label="创建时间"></el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
@@ -93,6 +98,12 @@ export default {
   },
 
   methods: {
+    //查看图片
+    checkProductImg(id) {
+      sessionStorage.product_id = id
+      this.$router.push({name: "commoditySpecificImages"});
+    },
+
     //新增库存
     productdAdd() {
       this.$router.push({ name: "commoditySpecificEdit" });

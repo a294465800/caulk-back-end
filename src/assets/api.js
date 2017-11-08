@@ -27,6 +27,8 @@ axios.interceptors.request.use(config => {
 
 export default {
 
+  host: 'http://192.168.3.22:9000/',
+
   /**
    * 出错提示函数
    * @param {object} error 错误对象 {return_code, return_msg}
@@ -267,6 +269,60 @@ export default {
    */
   getOrder(id, cb) {
     axios.get(`${host}order/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 获取产品图片
+   * @param {string} id 
+   * @param {function} cb 
+   */
+  getProductImages(id, cb) {
+    axios.get(`${host}commodity/pictures/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 删除产品图片
+   * @param {string} id 
+   * @param {function} cb 
+   */
+  deleteProductImages(id, cb) {
+    axios.get(`${host}del/commodity/picture/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 新增商品图片
+   * @param {object} data {commodity_id, base_url, thumb_url}
+   * @param {function} cb 
+   */
+  postProductImage(data, cb) {
+    axios.post(`${host}commodity/picture`, data)
       .then(res => {
         if ('200' === res.data.code) {
           typeof cb === 'function' && cb(res)
