@@ -1,9 +1,16 @@
 <style scoped>
+.wrap {
+  width: 100%;
+  height: 100%;
+}
 
+.tale-list {
+  flex: 1;
+}
 </style>
 
 <template>
-  <section class="wrap">
+  <section class="wrap flex-column">
     <!-- 面包屑导航 -->
     <el-breadcrumb class="breadcrumb" separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -31,6 +38,7 @@
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="id_card" label="身份证"></el-table-column>
         <el-table-column prop="phone" label="联系方式"></el-table-column>
+        <el-table-column prop="good_at" label="擅长" show-overflow-tooltip></el-table-column>
         <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
         <el-table-column prop="created_at" label="日期"></el-table-column>
         <el-table-column prop="state" label="当前状态">
@@ -67,17 +75,7 @@ export default {
         state: "0"
       },
 
-      masterLists: [
-        // {
-        //   id: 1,
-        //   created_at: "2017-10-21",
-        //   name: "小明",
-        //   id_card: "440923522313213542",
-        //   address: "广州",
-        //   state: 0,
-        //   phone: "18932442312"
-        // }
-      ],
+      masterLists: [],
       count: 0,
       currentPage: 1
     };
