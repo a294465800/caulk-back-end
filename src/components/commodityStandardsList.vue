@@ -37,7 +37,7 @@
         <el-table-column prop="title" label="规格名"></el-table-column>
         <el-table-column prop="attrs" label="具体规格" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span v-for="(tag, index) in scope.row.attrs" :key="index" style="margin-right: 5px;">{{tag}}</span>
+            <span v-for="(tag, index) in scope.row.attrs" :key="index" style="margin-right: 5px;">{{tag.title}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="created_at" label="创建时间"></el-table-column>

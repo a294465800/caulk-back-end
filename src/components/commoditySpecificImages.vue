@@ -27,9 +27,10 @@
 }
 
 .img-del i {
-  font-size: 50px;
+  font-size: 40px;
   cursor: pointer;
   color: #888;
+  margin: 0 10px;
 }
 .img-item:hover .img-del {
   display: flex;
@@ -63,17 +64,22 @@
     </div>
     <!-- /功能 -->
 
-    <div class="img-list flex-row">
-      <div v-if="images.length">
+    <div class="img-list">
+      <div class="flex-row" v-if="images.length">
         <div class="img-item" v-for="(img, index) in images" :key="img.id">
           <img :src="img.url" alt="商品图片失效">
           <div class="img-del">
+            <i class="el-icon-view" @click="preImg(img)"></i>
             <i class="el-icon-delete" @click="delImg(img.id, index)"></i>
           </div>
         </div>
       </div>
       <div v-else class="no-pic">暂无图片</div>
     </div>
+
+    <el-dialog width="40%" :visible="dialogVisible" @close="closeDialog" style="text-align: center;">
+      <img style="max-width: 100%;" :src="dialogImageUrl" alt="图片">
+    </el-dialog>
   </section>
 </template>
 
@@ -81,7 +87,9 @@
 export default {
   data() {
     return {
-      images: []
+      images: [],
+      dialogImageUrl: "",
+      dialogVisible: false
     };
   },
 
@@ -120,6 +128,20 @@ export default {
             message: "已取消"
           });
         });
+    },
+
+    /** 
+     * 预览图片
+     * @param {object} file 预览图片对象
+    */
+    preImg(img) {
+      this.dialogImageUrl = img.url;
+      this.dialogVisible = true;
+    },
+
+    //关闭 dialog
+    closeDialog() {
+      this.dialogVisible = false;
     }
   }
 };

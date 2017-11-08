@@ -109,7 +109,7 @@ body > .el-container {
             <el-menu-item index="/company/images">公司轮播</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-menu-item index="/company">
+        <el-menu-item index="/company/list">
           <i class="el-icon-info"></i>
           <span slot="title">公司简介</span>
         </el-menu-item>

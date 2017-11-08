@@ -17,6 +17,9 @@ import commodityOrderOne from '@/components/commodityOrderOne'
 import commodityImages from '@/components/commodityImages'
 import indexImages from '@/components/indexImages'
 import companyImages from '@/components/companyImages'
+import advertImgAdd from '@/components/advertImgAdd'
+import companyList from '@/components/companyList'
+import companyEdit from '@/components/companyEdit'
 
 Vue.use(Router)
 
@@ -89,6 +92,27 @@ export default new Router({
         path: '/company/images',
         name: 'companyImages',
         component: companyImages
+      }, {
+        path: '/images/edit',
+        name: 'advertImgAdd',
+        component: advertImgAdd,
+        beforeEnter: (to, from, next) => {
+          if (!from.name) {
+            next({
+              path: '/'
+            })
+          } else {
+            next()
+          }
+        }
+      }, {
+        path: '/company/list',
+        name: 'companyList',
+        component: companyList
+      }, {
+        path: '/company/edit',
+        name: 'companyEdit',
+        component: companyEdit
       }]
     }
   ]

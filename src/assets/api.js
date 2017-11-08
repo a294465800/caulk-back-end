@@ -332,6 +332,79 @@ export default {
       }).catch(error => {
         this.APIError(error.response)
       })
+  },
+
+  /**
+   * 获取广告列表
+   * @param {object} data {type}
+   * @param {function} cb
+   */
+  getAdverts(data, cb) {
+    axios.get(`${host}adverts`, {
+        params: data
+      })
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 提交广告
+   * @param {object} data {type, thumb_url, url, param}
+   * @param {function} cb 
+   */
+  postAdvert(data, cb) {
+    axios.post(`${host}advert`, data)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 获取公司信息
+   * @param {function} cb 
+   */
+  getCompanies(cb) {
+    axios.get(`${host}articles`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 提交公司信息
+   * @param {object} data {content, type}
+   * @param {function} cb 
+   */
+  postCompany(data, cb) {
+    axios.post(`${host}article`, data)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
   }
 
 }

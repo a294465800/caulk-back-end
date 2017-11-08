@@ -1,5 +1,46 @@
 <style scoped>
+.img-item {
+  width: 250px;
+  height: 250px;
+  border-radius: 5px;
+  margin: 20px;
+  position: relative;
+}
 
+.img-item img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.img-del {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.4);
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-del i {
+  font-size: 40px;
+  cursor: pointer;
+  color: #888;
+  margin: 0 10px;
+}
+.img-item:hover .img-del {
+  display: flex;
+}
+
+.no-pic {
+  font-size: 20px;
+  text-align: center;
+  flex: 1;
+}
 </style>
 
 <template>
@@ -11,17 +52,31 @@
     </el-breadcrumb>
     <!-- 面包屑导航 -->
 
-    <!-- 图片列表 -->
-    <div class="img-list">
-      <el-upload :action="host" name="image" list-type="picture-card" accept="image/jpeg,image/png,image/jpg" :class="{'hide':imagesLimit}" :file-list="imgLists" :on-preview="handlePictureCardPreview" :before-upload="beforeImagesUpload" :on-remove="handleRemove">
-        <i class="el-icon-plus"></i>
-      </el-upload>
-      <el-dialog width="40%" :visible="dialogVisible" @close="closeDialog" style="text-align: center;">
-        <img style="max-width: 100%;" :src="dialogImageUrl" alt="图片">
-      </el-dialog>
+    <!-- 功能 -->
+    <div class="operation">
+      <div class="operation-btns">
+          <el-button type="primary" @click="productdAddImg">新增图片</el-button>
+          <!-- <el-button type="danger"  @click="productDeleteAll">删除</el-button> -->
+      </div>
     </div>
-    <el-button type="primary">确定提交<i class="el-icon-upload el-icon--right"></i></el-button>
-    <!-- /图片列表 -->
+    <!-- /功能 -->
+
+    <div class="img-list">
+      <div class="flex-row" v-if="images.length">
+        <div class="img-item" v-for="(img, index) in images" :key="img.id">
+          <img :src="img.url" alt="商品图片失效">
+          <div class="img-del">
+            <i class="el-icon-view" @click="preImg(img)"></i>
+            <i class="el-icon-delete" @click="delImg(img.id, index)"></i>
+          </div>
+        </div>
+      </div>
+      <div v-else class="no-pic">暂无图片</div>
+    </div>
+
+    <el-dialog width="40%" :visible="dialogVisible" @close="closeDialog" style="text-align: center;">
+      <img style="max-width: 100%;" :src="dialogImageUrl" alt="图片">
+    </el-dialog>
   </section>
 </template>
 
@@ -29,75 +84,60 @@
 export default {
   data() {
     return {
-      host: "",
-      imgLists: [
-        {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        },
-        {
-          name: "food2.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        },
-        {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        },
-        {
-          name: "food2.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        }
-      ],
+      images: [],
       dialogImageUrl: "",
       dialogVisible: false
     };
   },
 
   created() {
-    this.host = this.$api.host + "upload";
-  },
-
-  computed: {
-    imagesLimit: function() {
-      return this.imgLists.length >= 5 ? true : false;
-    }
+    this.$api.getAdverts({ type: 1 }, res => {
+      this.images = res.data.data;
+    });
   },
 
   methods: {
-    /** 
-     * 移除图片
-     * @param {object} file 当前文件对象
-     * @param {array object} flieList 所有文件
-    */
-    handleRemove(file, fileList) {
-      this.imgLists = fileList;
-      console.log(file, fileList);
+    //新增图片
+    productdAddImg() {
+      const path = {
+        path: "/index/images",
+        type: 1,
+        name: "首页轮播"
+      };
+      this.$router.push({ name: "advertImgAdd", params: { path: path } });
+    },
+
+    //删除图片
+    delImg(id, index) {
+      this.$confirm("此操作将删除此图片, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$api.deleteProductImages(id, res => {
+            this.images.splice(index, 1);
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
     },
 
     /** 
      * 预览图片
      * @param {object} file 预览图片对象
     */
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
+    preImg(img) {
+      this.dialogImageUrl = img.url;
       this.dialogVisible = true;
-    },
-
-    /**
-     * 控制上传图片的大小
-     * @param {object} file 当前即将上传的文件
-     * */
-    beforeImagesUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 1;
-
-      if (!isLt2M) {
-        this.$message.error("上传的图片大小不能超过 1MB!");
-      }
-      return isLt2M;
     },
 
     //关闭 dialog
@@ -107,5 +147,3 @@ export default {
   }
 };
 </script>
-
-
