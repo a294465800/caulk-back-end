@@ -4,8 +4,9 @@ import {
   MessageBox
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-const host = 'http://119.23.255.177:8090/'
+// const host = 'http://119.23.255.177:8090/'
 // const host = 'http://192.168.3.22:9000/'
+const host = 'http://xcx.gdmeika.com/'
 
 /*
   配置 axios
@@ -27,7 +28,7 @@ axios.interceptors.request.use(config => {
 
 export default {
 
-  host: 'http://119.23.255.177:8090/',
+  host: 'http://xcx.gdmeika.com/',
 
   /**
    * 出错提示函数
