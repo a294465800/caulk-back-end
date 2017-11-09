@@ -63,11 +63,11 @@ body > .el-container {
 <el-container>
   <!-- 顶部 -->
   <el-header>
-    <div class="header-logo">LOGO</div>
+    <div class="header-logo">美家美缝</div>
     <div class="header-user">
       <el-dropdown trigger="click">
       <span class="el-dropdown-link">
-        <i>欢迎</i>SHINING
+        <i>欢迎</i>管理员
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
