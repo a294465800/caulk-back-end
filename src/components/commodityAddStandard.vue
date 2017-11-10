@@ -38,7 +38,7 @@
         <el-form-item v-for="(standard, index) in stardandsForm.standars" label="规格名" :key="standard.key" style="margin-bottom: 30px;">
           <div class="flex-row" style="margin-bottom: 20px;">
             <el-input v-model="standard.title"></el-input>
-            <!-- <el-button style="margin-left: 30px;" type="danger" size="small" @click.prevent="removeDomain(standard)">删除当前规格</el-button> -->
+            <el-button style="margin-left: 30px;" type="danger" size="small" @click.prevent="removeDomain(standard)">删除当前规格</el-button>
           </div>
           <el-tag :key="tag" v-for="(tag, tagIndex) in stardandsForm.standars[index].attrs" closable :disable-transitions="false" @close="handleClose(index, tag)"> {{tag}}</el-tag>
           <el-input class="input-new-tag" v-if="inputVisible && currentIndex == index" v-model="inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm(index)" @blur="handleInputConfirm(index)" >
@@ -46,7 +46,7 @@
           <el-button v-else class="button-new-tag" size="small" @click="showInput(index)">+ 新种类</el-button>
         </el-form-item>
         <el-form-item>
-          <!-- <el-button @click="addDomain">新增规格</el-button> -->
+          <el-button @click="addDomain" style="margin-bottom: 30px;">新增规格</el-button>
           <el-button type="primary" style="width: 100%;" @click="submitForm('stardandsForm')">确定</el-button>
         </el-form-item>
       </el-form>
@@ -103,7 +103,6 @@ export default {
         { commodity_id: this.commodity_id },
         this.stardandsForm.standars[0]
       );
-      console.log(formData);
       this.$api.postStandards(formData, res => {
         this.$message({
           type: "success",

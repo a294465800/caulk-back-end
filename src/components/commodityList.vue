@@ -46,7 +46,7 @@
             <el-button type="text" @click="checkStandard(scope.row.id)">查看规格</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="规格">
+        <el-table-column label="库存">
           <template slot-scope="scope">
             <el-button type="text" @click="checkProduct(scope.row.id)">查看库存</el-button>
           </template>
@@ -193,7 +193,7 @@ export default {
         .then(() => {
           this.$api.deleteCommodityInfo(row.id, res => {
             this.commodities.splice(index, 1);
-            this.count--
+            this.count--;
             this.$message({
               type: "success",
               message: "删除成功"
@@ -212,8 +212,7 @@ export default {
      * 页码事件
      * @param {number} page 当前页码
      * */
-    handleCurrentChange(page) {
-    }
+    handleCurrentChange(page) {}
   }
 };
 </script>
