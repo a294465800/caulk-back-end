@@ -48,7 +48,16 @@ export default new Router({
       }, {
         path: '/list/commodity/add',
         name: 'commodityAdd',
-        component: commodityAdd
+        component: commodityAdd,
+        beforeEnter: (to, from, next) => {
+          if (!from.name) {
+            next({
+              path: '/list/commodity'
+            })
+          } else {
+            next()
+          }
+        }
       }, {
         path: '/list/commodity/add/standard',
         name: 'commodityAddStandard',

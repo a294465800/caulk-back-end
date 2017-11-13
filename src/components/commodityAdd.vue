@@ -78,8 +78,8 @@
         <el-form-item label="商品名称" prop="title">
           <el-input v-model="infoForm.title"></el-input>
         </el-form-item>
-        <el-form-item label="商品图片" prop="images">
-          <div class="img-list flex-row">
+        <el-form-item label="商品图片（最多 5 张）" prop="images" :class="{'active':  hideUpload}">
+          <!-- <div class="img-list flex-row">
             <div class="img-item" v-for="(img, index) in infoForm.images" :key="img.id">
               <img :src="img.url" alt="商品图片">
               <div class="img-del">
@@ -87,7 +87,10 @@
                 <i class="el-icon-delete" @click="delImg(img.id, index)"></i>
               </div>
             </div>
-          </div>
+          </div> -->
+          <el-upload :action="host" name="image" :file-list="images" list-type="picture-card" :before-upload="beforeAvatarUpload" accept="image/png,image/gif,image/jpg,image/jpeg" :on-success="uploadSuccess" :on-remove="handleRemove">
+            <i class="el-icon-plus"></i>
+          </el-upload>
         </el-form-item>
         <el-form-item label="商品描述" prop="description">
           <el-input type="textarea" v-model="infoForm.description"></el-input>
@@ -103,10 +106,6 @@
         </el-form-item>
       </el-form>
     </div>
-    
-    <el-dialog width="40%" :visible="dialogVisible" @close="closeDialog" style="text-align: center;">
-      <img style="max-width: 100%;" :src="dialogImageUrl" alt="图片">
-    </el-dialog>
   </section>
 </template>
 
@@ -114,23 +113,16 @@
 export default {
   data() {
     return {
+      host: this.$api.host + "upload",
       infoForm: {
         title: "",
         description: "",
         content: "",
-        images: [
-          {
-            name: "food.jpeg",
-            url:
-              "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-          },
-          {
-            name: "food2.jpeg",
-            url:
-              "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-          }
-        ]
+        images: []
       },
+
+      images: [],
+      hideUpload: false,
 
       dialogImageUrl: "",
       dialogVisible: false,
@@ -146,6 +138,17 @@ export default {
     };
   },
 
+  created() {
+    const commodity = this.$route.params.commodity;
+    if (commodity) {
+      this.infoForm.title = commodity.title;
+      this.infoForm.description = commodity.description;
+      this.infoForm.content = commodity.content;
+      this.infoForm.id = commodity.id;
+      this.images = commodity.pictures;
+    }
+  },
+
   computed: {
     editor() {
       return this.$refs.myTextEditor.quill;
@@ -153,44 +156,42 @@ export default {
   },
 
   methods: {
-    //删除图片
-    delImg(id, index) {
-      // this.$confirm("此操作将删除此图片, 是否继续?", "提示", {
-      //   confirmButtonText: "确定",
-      //   cancelButtonText: "取消",
-      //   type: "warning"
-      // })
-      //   .then(() => {
-      //     this.$api.deleteAdvert(id, res => {
-      //       this.images.splice(index, 1);
-      //       this.$message({
-      //         type: "success",
-      //         message: "删除成功!"
-      //       });
-      //     });
-      //   })
-      //   .catch(() => {
-      //     this.$message({
-      //       type: "info",
-      //       message: "已取消"
-      //     });
-      //   });
-
-      this.infoForm.images.splice(index, 1);
+    //上传成功
+    uploadSuccess(res, file, filelist) {
+      this.infoForm.images.push(res.data.file_name);
+      if (this.infoForm.images.length >= 5) {
+        this.hideUpload = true;
+      }
     },
 
-    /** 
-     * 预览图片
-    */
-    preImg(img) {
-      console.log(11);
-      this.dialogImageUrl = img.url;
-      this.dialogVisible = true;
+    //删除
+    handleRemove(file) {
+      if (file.response === undefined) {
+        this.$api.deleteCommodityImg(file.id, res => {
+          this.$message({
+            type: "success",
+            message: "图片已删除"
+          });
+        });
+      } else {
+        const index = file.response.data.file_name.indexOf(
+          this.infoForm.images
+        );
+        this.infoForm.images.splice(index, 1);
+        if (this.infoForm.images.length <= 5) {
+          this.hideUpload = false;
+        }
+      }
     },
 
-    //关闭 dialog
-    closeDialog() {
-      this.dialogVisible = false;
+    //上传之前
+    beforeAvatarUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isLt2M;
     },
 
     //确定

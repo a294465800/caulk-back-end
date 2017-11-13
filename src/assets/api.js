@@ -5,8 +5,8 @@ import {
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // const host = 'http://119.23.255.177:8090/'
-const host = 'http://192.168.3.22:9000/'
-// const host = 'http://xcx.gdmeika.com/'
+// const host = 'http://192.168.3.22:9000/'
+const host = 'http://xcx.gdmeika.com/'
 
 /*
   配置 axios
@@ -28,8 +28,8 @@ axios.interceptors.request.use(config => {
 
 export default {
 
-  // host: 'http://xcx.gdmeika.com/',
-  host: 'http://192.168.3.22:9000/',
+  host: 'http://xcx.gdmeika.com/',
+  // host: 'http://192.168.3.22:9000/',
 
   /**
    * 出错提示函数
@@ -119,6 +119,24 @@ export default {
   },
 
   /**
+   * 删除商品单张图片
+   * @param {string} id 
+   * @param {function} cb 回调
+   */
+  deleteCommodityImg(id, cb) {
+    axios.get(`${host}del/commodity/picture/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
    * 删除商品 第一步
    * @param {string} id 
    * @param {function} cb  回调
@@ -142,7 +160,7 @@ export default {
    * @param {function} cb 
    */
   postStandards(data, cb) {
-    axios.post(`${host}standard`, data)
+    axios.post(`${host}standards`, data)
       .then(res => {
         if ('200' === res.data.code) {
           typeof cb === 'function' && cb(res)
@@ -195,8 +213,10 @@ export default {
    * @param {string} id commodity_id
    * @param {function} cb 回调
    */
-  getProducts(id, cb) {
-    axios.get(`${host}products/${id}`)
+  getProducts(id, data, cb) {
+    axios.get(`${host}products/${id}`, {
+        params: data
+      })
       .then(res => {
         if ('200' === res.data.code) {
           typeof cb === 'function' && cb(res)

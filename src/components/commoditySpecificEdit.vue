@@ -18,14 +18,20 @@
     <!-- 面包屑导航 -->  
 
     <div class="form-wrap">
-      <el-form :model="productForm" :rules="rules" ref="productForm" label-width="100px" class="demo-productForm">
-        <el-form-item label="商品名称" prop="title">
-          <div class="title">{{productForm.standards[0]?productForm.standards[0].commodity_title: ''}}</div>
+     <el-form :model="productForm" :rules="rules" ref="productForm" label-width="100px" class="demo-productForm">
+        <el-form-item label="商品名称">
+          <div class="title">{{commodity_title}}</div>
         </el-form-item>
-        <el-form-item v-for="(standard, index) in productForm.standards" :key="standard.id" :label="standard.title" prop="feature">
-          <el-select v-model="productForm.feature[index]" placeholder="请选择规格">
-            <el-option v-for="(tag,tagIndex) in standard.attrs" :key="tag.id" :label="tag.title" :value="tag.id"></el-option>
-          </el-select>
+        <el-form-item class="low-label" v-for="(standard, index) in standards" :key="standard.id" :label="standard.title" prop="feature">
+          <el-radio-group v-model="productForm.feature[index]" size="medium">
+            <el-radio style="margin: 0 10px 10px 0;" v-for="(tag,tagIndex) in standard.attrs" :key="tag.id" :label="tag.id">{{tag.title}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item prop="image" label="商品封面">
+          <el-upload class="avatar-uploader" name="image" accept="image/gif,image/png,image/jpg,image/jpeg" :action="host" :show-file-list="false" :on-success="handleUploadSuccess" :before-upload="beforeUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
         </el-form-item>
         <el-form-item label="价格" prop="price">
           <el-input v-model.number="productForm.price">
@@ -38,7 +44,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('productForm')" style="width: 100%;">确定</el-button>
+          <el-button type="primary" @click="submitForm('productForm')" style="width: 100%;">新增商品</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -49,6 +55,7 @@
 export default {
   data() {
     return {
+      host: this.$api.host + "upload",
       productForm: {
         id: "",
         commodity_id: sessionStorage.commodity_id,
@@ -57,6 +64,9 @@ export default {
         feature: [],
         standards: []
       },
+      commodity_title: sessionStorage.commodity_title,
+      imageUrl: "",
+      standards: [],
 
       rules: {
         price: [
@@ -72,22 +82,32 @@ export default {
   created() {
     const product = this.$route.params.product;
     let tmp = [];
-    if (product) {
-      console.log(product);
-      for (let i = 0; i < product.attrs.length; i++) {
-        tmp.push(product.attrs[i].id);
-      }
-      this.productForm.id = product.id;
-      this.productForm.feature = tmp;
-      this.productForm.price = product.price;
-      this.productForm.stock = product.stock;
+    for (let i = 0; i < product.attrs.length; i++) {
+      tmp.push(product.attrs[i].id);
     }
+    this.productForm.id = product.id;
+    this.productForm.feature = tmp;
+    this.productForm.price = product.price;
+    this.productForm.stock = product.stock;
+    this.imageUrl = product.pictures ? product.pictures.url : "";
     this.$api.getStandards(sessionStorage.commodity_id, res => {
-      this.productForm.standards = res.data.data;
+      this.standards = res.data.data;
     });
   },
 
   methods: {
+    handleUploadSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      this.productForm.image = res.data.file_name;
+    },
+    beforeUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isLt2M;
+    },
     //提交
     submitForm(formName) {
       const dataForm = this.productForm;
@@ -109,14 +129,7 @@ export default {
               return false;
             }
           }
-          let postData = {
-            id: dataForm.id,
-            feature: dataForm.feature,
-            commodity_id: dataForm.commodity_id,
-            price: dataForm.price,
-            stock: dataForm.stock
-          };
-          this.$api.postProduct(postData, res => {
+          this.$api.postProduct(this.productForm, res => {
             this.$message({
               type: "success",
               message: "保存成功"

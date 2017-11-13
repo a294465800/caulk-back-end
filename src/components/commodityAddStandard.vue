@@ -35,12 +35,12 @@
 
     <div class="form-wrap">
       <el-form :model="stardandsForm" ref="stardandsForm" label-width="100px">
-        <el-form-item v-for="(standard, index) in stardandsForm.standars" label="规格名" :key="standard.key" style="margin-bottom: 30px;">
+        <el-form-item v-for="(standard, index) in stardandsForm.standards" label="规格名" :key="standard.key" style="margin-bottom: 30px;">
           <div class="flex-row" style="margin-bottom: 20px;">
             <el-input v-model="standard.title"></el-input>
-            <el-button style="margin-left: 30px;" type="danger" size="small" @click.prevent="removeDomain(standard)">删除当前规格</el-button>
+            <el-button v-if="stardandsForm.standards.length > 1" style="margin-left: 30px;" type="danger" size="small" @click.prevent="removeDomain(standard)">删除当前规格</el-button>
           </div>
-          <el-tag :key="tag" v-for="(tag, tagIndex) in stardandsForm.standars[index].attrs" closable :disable-transitions="false" @close="handleClose(index, tag)"> {{tag}}</el-tag>
+          <el-tag :key="tag" v-for="(tag, tagIndex) in stardandsForm.standards[index].attrs" closable :disable-transitions="false" @close="handleClose(index, tag)"> {{tag}}</el-tag>
           <el-input class="input-new-tag" v-if="inputVisible && currentIndex == index" v-model="inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm(index)" @blur="handleInputConfirm(index)" >
           </el-input>
           <el-button v-else class="button-new-tag" size="small" @click="showInput(index)">+ 新种类</el-button>
@@ -62,7 +62,7 @@ export default {
       inputVisible: false,
       inputValue: "",
       stardandsForm: {
-        standars: [
+        standards: [
           {
             title: "",
             attrs: []
@@ -82,7 +82,7 @@ export default {
   methods: {
     //校验
     submitForm() {
-      const standardsForm = this.stardandsForm.standars;
+      const standardsForm = this.stardandsForm.standards;
       if (!standardsForm.length) {
         this.$message({
           type: "warning",
@@ -100,8 +100,11 @@ export default {
         }
       }
       const formData = Object.assign(
+        {},
         { commodity_id: this.commodity_id },
-        this.stardandsForm.standars[0]
+        {
+          standards: this.stardandsForm.standards
+        }
       );
       this.$api.postStandards(formData, res => {
         this.$message({
@@ -114,7 +117,7 @@ export default {
 
     //添加新规格
     addDomain() {
-      this.stardandsForm.standars.push({
+      this.stardandsForm.standards.push({
         title: "",
         attrs: [],
         key: Date.now()
@@ -123,16 +126,16 @@ export default {
 
     //移除规格
     removeDomain(item) {
-      var index = this.stardandsForm.standars.indexOf(item);
+      var index = this.stardandsForm.standards.indexOf(item);
       if (index !== -1) {
-        this.stardandsForm.standars.splice(index, 1);
+        this.stardandsForm.standards.splice(index, 1);
       }
     },
 
     //删除单个规格标签
     handleClose(index, tag) {
-      this.stardandsForm.standars[index].attrs.splice(
-        this.stardandsForm.standars[index].attrs.indexOf(tag),
+      this.stardandsForm.standards[index].attrs.splice(
+        this.stardandsForm.standards[index].attrs.indexOf(tag),
         1
       );
     },
@@ -146,7 +149,7 @@ export default {
     handleInputConfirm(index) {
       let inputValue = this.inputValue;
       if (inputValue) {
-        this.stardandsForm.standars[index].attrs.push(inputValue);
+        this.stardandsForm.standards[index].attrs.push(inputValue);
       }
       this.inputVisible = false;
       this.inputValue = "";

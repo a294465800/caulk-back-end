@@ -41,6 +41,7 @@
         <!-- <el-table-column type="selection"></el-table-column> -->
         <el-table-column prop="id" label="ID" sortable></el-table-column>
         <el-table-column prop="title" label="商品名称"></el-table-column>
+        <el-table-column prop="description" label="描述" show-overflow-tooltip></el-table-column>
         <el-table-column label="规格">
           <template slot-scope="scope">
             <el-button type="text" @click="checkStandard(scope.row.id)">查看规格</el-button>
@@ -48,14 +49,13 @@
         </el-table-column>
         <el-table-column label="库存">
           <template slot-scope="scope">
-            <el-button type="text" @click="checkProduct(scope.row.id)">查看库存</el-button>
+            <el-button type="text" @click="checkProduct(scope.row)">查看库存</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="description" label="描述" show-overflow-tooltip></el-table-column>
         <el-table-column prop="created_at" label="创建时间"></el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <!-- <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button> -->
+            <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button>
             <el-button size="small" type="danger"  @click="commodityDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -145,8 +145,9 @@ export default {
     /**
      * 查看库存
      */
-    checkProduct(id) {
-      sessionStorage.commodity_id = id;
+    checkProduct(row) {
+      sessionStorage.commodity_id = row.id;
+      sessionStorage.commodity_title = row.title;
       this.$router.push({ name: "commoditySpecificList" });
     },
 
@@ -175,9 +176,12 @@ export default {
      * @param {number} index 当前行（数据）索引
      * @param {object} row 当前行（数据）所有信息
      */
-    // commodityEdit(index, row) {
-    //   console.log(index);
-    // },
+    commodityEdit(index, row) {
+      this.$router.push({
+        name: "commodityAdd",
+        params: { commodity: row }
+      });
+    },
 
     /**
      * 行删除
