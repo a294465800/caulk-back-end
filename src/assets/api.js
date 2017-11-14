@@ -210,6 +210,43 @@ export default {
       })
   },
 
+
+  /**
+   * 删除单个规格的单个属性
+   * @param {string} id 
+   * @param {function} cb 
+   */
+  deleteStandardAttr(id, cb) {
+    axios.get(`${host}del/attr/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 编辑单个规格
+   * @param {string} id 
+   * @param {object} data {title, attrs}
+   * @param {function} cb 回调
+   */
+  editStandardSingle(id, data, cb) {
+    axios.post(`${host}standard/${id}`, data)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
   /**
    * 获取商品列表 第三步
    * @param {string} id commodity_id

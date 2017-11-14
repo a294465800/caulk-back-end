@@ -7,6 +7,7 @@ import reservationList from '@/components/reservationList'
 import commodityList from '@/components/commodityList'
 import commodityAdd from '@/components/commodityAdd'
 import commodityAddStandard from '@/components/commodityAddStandard'
+import commodityStandardChange from '@/components/commodityStandardChange'
 import commodityStandardsList from '@/components/commodityStandardsList'
 import commoditySpecificList from '@/components/commoditySpecificList'
 import commoditySpecificEdit from '@/components/commoditySpecificEdit'
@@ -62,6 +63,19 @@ export default new Router({
         path: '/list/commodity/add/standard',
         name: 'commodityAddStandard',
         component: commodityAddStandard
+      }, {
+        path: '/list/commodity/edit/standard',
+        name: 'commodityStandardChange',
+        component: commodityStandardChange,
+        beforeEnter: (to, from, next) => {
+          if (!from.name) {
+            next({
+              path: '/list/commodity/standards'
+            })
+          } else {
+            next()
+          }
+        }
       }, {
         path: '/list/commodity/standards',
         name: 'commodityStandardsList',

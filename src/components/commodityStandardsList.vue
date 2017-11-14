@@ -43,7 +43,7 @@
         <el-table-column prop="created_at" label="创建时间"></el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
-            <!-- <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button> -->
+            <el-button size="small" type="primary" @click="commodityEdit(scope.$index, scope.row)">修改</el-button>
             <el-button size="small" type="danger"  @click="standardDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -117,9 +117,12 @@ export default {
      * @param {number} index 当前行（数据）索引
      * @param {object} row 当前行（数据）所有信息
      */
-    // commodityEdit(index, row) {
-    //   console.log(index);
-    // },
+    commodityEdit(index, row) {
+      this.$router.push({
+        name: "commodityStandardChange",
+        params: { standard: row }
+      });
+    },
 
     /**
      * 行删除
