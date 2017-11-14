@@ -64,7 +64,7 @@
         <el-table-column prop="phone" label="联系方式"></el-table-column>
         <el-table-column prop="good_at" label="擅长" show-overflow-tooltip></el-table-column>
         <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="created_at" label="日期"></el-table-column>
+        <el-table-column prop="created_at" label="申请时间"></el-table-column>
         <el-table-column prop="state" label="申请状态">
           <template slot-scope="scope">
             <span v-if="scope.row.state == 0" class="normal">待处理</span>

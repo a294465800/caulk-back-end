@@ -104,7 +104,16 @@ export default new Router({
       }, {
         path: '/list/order/one',
         name: 'commodityOrderOne',
-        component: commodityOrderOne
+        component: commodityOrderOne,
+        beforeEnter: (to, from, next) => {
+          if (!from.name) {
+            next({
+              path: '/list/order'
+            })
+          } else {
+            next()
+          }
+        }
       }, {
         path: '/list/commodity/images',
         name: 'commodityImages',

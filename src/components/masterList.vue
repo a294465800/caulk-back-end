@@ -53,21 +53,14 @@
         </el-input>
       </div>
       <el-form :inline="true" :model="searchForm">
-        <el-form-item label="省份">
-          <el-select v-model="searchForm.area" placeholder="选择省份">
-            <el-option v-for="sheng in shengs" :key="sheng.id" :label="sheng.fullname" :value="sheng.id"></el-option>
-          </el-select>
-        </el-form-item>
-        <!-- <el-form-item label="申请状态">
-          <el-select v-model="searchForm.state" placeholder="申请状态">
-            <el-option label="待处理" value="0"></el-option>
-            <el-option label="通过" value="1"></el-option>
-            <el-option label="拒绝" value="2"></el-option>
-          </el-select>
-        </el-form-item> -->
         <el-form-item label="注册时间">
           <el-date-picker v-model="searchForm.time" type="datetimerange" :picker-options="pickerOptions" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="left">
         </el-date-picker>
+        <el-form-item label="省份">
+          <el-select v-model="searchForm.province" placeholder="选择省份">
+            <el-option v-for="sheng in shengs" :key="sheng.id" :label="sheng.fullname" :value="sheng.fullname"></el-option>
+          </el-select>
+        </el-form-item>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">搜索</el-button>
@@ -87,6 +80,9 @@
               <el-form-item label="昵称">
                 <span>{{ props.row.nickname }}</span>
               </el-form-item>
+              <el-form-item label="详细地址">
+                <span>{{ props.row.apply.address }}</span>
+              </el-form-item>
               <el-form-item style="width: 100%;" label="擅长领域">
                 <span>{{ props.row.apply.good_at }}</span>
               </el-form-item>
@@ -95,11 +91,9 @@
         </el-table-column>
         <el-table-column prop="id" label="ID" sortable></el-table-column>
         <el-table-column prop="apply.name" label="姓名"></el-table-column>
-        <!-- <el-table-column prop="id_card" label="身份证"></el-table-column> -->
         <el-table-column prop="apply.phone" label="联系方式"></el-table-column>
         <el-table-column prop="count" label="接单数量" sortable></el-table-column>
-        <!-- <el-table-column prop="good_at" label="擅长" show-overflow-tooltip></el-table-column> -->
-        <el-table-column prop="apply.address" label="地址" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="apply.city" label="注册区域" show-overflow-tooltip></el-table-column>
         <el-table-column prop="apply.created_at" label="注册时间"></el-table-column>
         <el-table-column prop="state" label="使用状态">
           <template slot-scope="scope">
@@ -107,13 +101,6 @@
             <span v-else class="success">正常使用</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="state" label="申请状态">
-          <template slot-scope="scope">
-            <span v-if="scope.row.state == 0" class="normal">待处理</span>
-            <span v-else-if="scope.row.state == 1" class="success">已通过</span>
-            <span v-else class="warning">已拒绝</span>
-          </template>
-        </el-table-column> -->
         <el-table-column prop="state" label="操作">
           <template slot-scope="scope">
             <el-button v-if="scope.row.state == 1" size="small" type="primary" @click="reuseMaster(scope.$index, scope.row.id)">恢复使用</el-button>
@@ -179,7 +166,10 @@ export default {
 
       workerLists: [],
       count: 0,
-      currentPage: 1
+      currentPage: 1,
+
+      searchData1: {},
+      searchData2: {}
     };
   },
 
@@ -197,12 +187,29 @@ export default {
   methods: {
     //内容搜索
     selectSearch() {
-      console.log("select", this.select);
-      console.log("selectInput", this.selectInput);
+      let getData = {
+        [this.select]: this.selectInput,
+        search: 1
+      };
+      this.searchData1 = getData;
+      this.$api.getWorkers(getData, res => {
+        this.workerLists = res.data.data;
+        this.count = res.data.count;
+      });
     },
     //搜索
-    search(state) {
-      this.$api.getApplies({ state: state }, res => {
+    search() {
+      const data = this.searchForm;
+      let getData = {
+        search: 1,
+        province: data.province
+      };
+      if (data.time) {
+        getData.start = data.time[0];
+        getData.end = data.time[1];
+      }
+      this.searchData2 = getData;
+      this.$api.getWorkers(getData, res => {
         this.workerLists = res.data.data;
         this.count = res.data.count;
       });
@@ -258,7 +265,10 @@ export default {
 
     //页码
     handleCurrentChange(page) {
-      this.$api.getWorkers({ page }, res => {
+      let getData = Object.assign({}, this.searchData1, this.searchData2, {
+        page
+      });
+      this.$api.getWorkers(getData, res => {
         this.workerLists = res.data.data;
       });
     }

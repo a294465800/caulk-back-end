@@ -528,7 +528,7 @@ export default {
 
   /**
    * 获取师傅列表
-   * @param {object} data {page}
+   * @param {object} data {page, (limit), name, id_card, province, start, end, search}
    * @param {function} cb 回调
    */
   getWorkers(data, cb) {
