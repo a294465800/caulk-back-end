@@ -39,9 +39,9 @@
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="number" label="联系方式"></el-table-column>
         <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="master" label="接单师傅">
+        <el-table-column prop="worker" label="接单师傅">
           <template slot-scope="scope">
-            <span v-if="scope.row.state == 1">黄师傅</span>
+            <span v-if="scope.row.state == 1">{{scope.row.worker}}}</span>
             <span v-else>暂未接单</span>
           </template>
         </el-table-column>

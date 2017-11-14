@@ -113,10 +113,16 @@ body > .el-container {
           <i class="el-icon-info"></i>
           <span slot="title">公司简介</span>
         </el-menu-item>
-        <el-menu-item index="/list/master">
-          <i class="el-icon-phone-outline"></i>
-          <span slot="title">师傅列表</span>
-        </el-menu-item>
+        <el-submenu index="/master">
+          <template slot="title">
+            <i class="el-icon-phone-outline"></i>
+            <span>师傅管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="/list/master">师傅列表</el-menu-item>
+            <el-menu-item index="/list/apply/master">申请列表</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
       </el-menu>
     </el-aside>
     <!-- 左侧导航 -->

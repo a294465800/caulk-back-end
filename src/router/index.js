@@ -22,6 +22,7 @@ import advertImgAdd from '@/components/advertImgAdd'
 import companyList from '@/components/companyList'
 import companyEdit from '@/components/companyEdit'
 import masterList from '@/components/masterList'
+import masterApplyList from '@/components/masterApplyList'
 
 Vue.use(Router)
 
@@ -141,6 +142,10 @@ export default new Router({
         path: '/list/master',
         name: 'masterList',
         component: masterList
+      }, {
+        path: '/list/apply/master',
+        name: 'masterApplyList',
+        component: masterApplyList
       }]
     }
   ]
