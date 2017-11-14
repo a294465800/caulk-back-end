@@ -1,12 +1,15 @@
 import axios from 'axios'
 import qs from 'qs'
+import jsonP from 'jsonp'
 import {
   MessageBox
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+const TXWebService = 'http://apis.map.qq.com/ws/district/v1/'
+const TXKey = 'FF2BZ-H34WP-GQPDC-VFKIS-P7DDH-BCFNG'
 // const host = 'http://119.23.255.177:8090/'
-// const host = 'http://192.168.3.22:9000/'
-const host = 'http://xcx.gdmeika.com/'
+const host = 'http://192.168.3.22:9000/'
+// const host = 'http://xcx.gdmeika.com/'
 
 /*
   配置 axios
@@ -28,15 +31,14 @@ axios.interceptors.request.use(config => {
 
 export default {
 
-  host: 'http://xcx.gdmeika.com/',
-  // host: 'http://192.168.3.22:9000/',
+  // host: 'http://xcx.gdmeika.com/',
+  host: 'http://192.168.3.22:9000/',
 
   /**
    * 出错提示函数
    * @param {object} error 错误对象 {return_code, return_msg}
    */
   APIError(error) {
-    console.log(error)
     MessageBox.alert(error ? error.data.msg : error, '出错啦', {
       confirmButtonText: '确定',
     })
@@ -485,6 +487,22 @@ export default {
       }).catch(error => {
         this.APIError(error.response)
       })
+  },
+
+  /**
+   * 假如省份的日期没有更新，就直接拿 localStorage 的数据
+   * @param {*行政区 ID} id 
+   * @param {* jsonP 回调} callback 
+   */
+  getDistrict(callback) {
+    const localShengs = localStorage.infoShengs
+    if (localShengs) {
+      typeof callback === 'function' && callback(null, JSON.parse(localShengs))
+    }
+    jsonP(`${TXWebService}getchildren?key=${TXKey}&output=jsonp`, null, (err, data) => {
+      localStorage.infoShengs = JSON.stringify(data)
+      typeof callback === 'function' && callback(err, data)
+    })
   },
 
 }

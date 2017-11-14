@@ -39,6 +39,12 @@
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="number" label="联系方式"></el-table-column>
         <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="master" label="接单师傅">
+          <template slot-scope="scope">
+            <span v-if="scope.row.state == 1">黄师傅</span>
+            <span v-else>暂未接单</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="state" label="当前状态" sortable>
           <template slot-scope="scope">
             <span v-if="scope.row.state == 0" class="warning">未接单</span>
@@ -105,8 +111,6 @@ export default {
 
     //搜索查询
     onSubmit(e) {
-      console.log(e)
-      // const state = this.searchForm.status;
       const state = e;
       let searchData = {};
       if (state != 2) {

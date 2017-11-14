@@ -7,6 +7,19 @@
 .tale-list {
   flex: 1;
 }
+
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
 </style>
 
 <template>
@@ -21,12 +34,24 @@
     <!-- 功能 -->
     <div class="operation">
       <el-form :inline="true" :model="searchForm">
+        <el-form-item label="省份">
+          <el-select v-model="searchForm.area" placeholder="选择省份">
+            <el-option v-for="sheng in shengs" :key="sheng.id" :label="sheng.fullname" :value="sheng.id"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="申请状态">
-          <el-select v-model="searchForm.state" placeholder="申请状态" @change="search">
+          <el-select v-model="searchForm.state" placeholder="申请状态">
             <el-option label="待处理" value="0"></el-option>
             <el-option label="通过" value="1"></el-option>
             <el-option label="拒绝" value="2"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item class="时间范围">
+          <el-date-picker v-model="searchForm.time" type="datetimerange" :picker-options="pickerOptions" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="left">
+        </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @change="search">搜索</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -34,14 +59,33 @@
 
     <div class="tale-list">
       <el-table :data="masterLists" border stripe style="min-width: 900px;">
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="demo-table-expand">
+              <el-form-item label="身份证">
+                <span>{{ props.row.id_card }}</span>
+              </el-form-item>
+              <el-form-item label="擅长领域">
+                <span>{{ props.row.good_at }}</span>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
         <el-table-column prop="id" label="ID" sortable></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="id_card" label="身份证"></el-table-column>
+        <!-- <el-table-column prop="id_card" label="身份证"></el-table-column> -->
         <el-table-column prop="phone" label="联系方式"></el-table-column>
-        <el-table-column prop="good_at" label="擅长" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="count" label="接单数量" sortable></el-table-column>
+        <!-- <el-table-column prop="good_at" label="擅长" show-overflow-tooltip></el-table-column> -->
         <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
         <el-table-column prop="created_at" label="日期"></el-table-column>
-        <el-table-column prop="state" label="当前状态">
+        <el-table-column prop="state" label="使用状态">
+          <template slot-scope="scope">
+            <span v-if="scope.row.state == 0" class="warning">已停用</span>
+            <span v-else class="success">正常使用</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="state" label="申请状态">
           <template slot-scope="scope">
             <span v-if="scope.row.state == 0" class="normal">待处理</span>
             <span v-else-if="scope.row.state == 1" class="success">已通过</span>
@@ -72,7 +116,42 @@ export default {
   data() {
     return {
       searchForm: {
-        state: "0"
+        state: "0",
+        time: ""
+      },
+
+      shengs: "",
+
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
       },
 
       masterLists: [],
@@ -85,6 +164,10 @@ export default {
     this.$api.getApplies({ state: 0 }, res => {
       this.masterLists = res.data.data;
       this.count = res.data.count;
+    });
+
+    this.$api.getDistrict((err, res) => {
+      this.shengs = res.result[0];
     });
   },
 
