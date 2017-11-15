@@ -95,16 +95,16 @@
         <el-table-column prop="count" label="接单数量" sortable></el-table-column>
         <el-table-column prop="apply.city" label="注册区域" show-overflow-tooltip></el-table-column>
         <el-table-column prop="apply.created_at" label="注册时间"></el-table-column>
-        <el-table-column prop="state" label="使用状态">
+        <el-table-column prop="enable" label="使用状态">
           <template slot-scope="scope">
-            <span v-if="scope.row.state == 1" class="warning">已停用</span>
-            <span v-else class="success">正常使用</span>
+            <span v-if="scope.row.enable == 1" class="success">正常使用</span>
+            <span v-else class="warning">已停用</span>
           </template>
         </el-table-column>
         <el-table-column prop="state" label="操作">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.state == 1" size="small" type="primary" @click="reuseMaster(scope.$index, scope.row.id)">恢复使用</el-button>
-            <el-button v-else size="small" type="danger" @click="stopMaster(scope.$index, scope.row.id)">停用</el-button>
+            <el-button v-if="scope.row.enable == 1" size="small" type="danger" @click="stopMaster(scope.$index, scope.row.id)">停用</el-button>
+            <el-button v-else size="small" type="primary" @click="reuseMaster(scope.$index, scope.row.id)">恢复使用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -223,11 +223,11 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$api.postApply(id, { state: 0 }, res => {
-            this.workerLists[index].state = 0;
+          this.$api.changeWorker(id, res => {
+            this.workerLists[index].enable = 1;
             this.$message({
               type: "success",
-              message: "恢复成功"
+              message: "已恢复使用"
             });
           });
         })
@@ -239,7 +239,7 @@ export default {
         });
     },
 
-    //通过
+    //停用
     stopMaster(index, id) {
       this.$confirm("此操作将停用该师傅帐号, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -247,10 +247,10 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$api.postApply(id, { state: 1 }, res => {
-            this.workerLists[index].state = 1;
+          this.$api.changeWorker(id, res => {
+            this.workerLists[index].enable = 0;
             this.$message({
-              type: "warning",
+              type: "success",
               message: "已停用"
             });
           });
