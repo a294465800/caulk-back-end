@@ -156,4 +156,13 @@ body {
   height: 178px;
   display: block;
 }
+
+.loading-wrap {
+  width: 100%;
+  height: 100%;
+}
+
+.loading-wrap i {
+  font-size: 20px;
+}
 </style>

@@ -3,7 +3,10 @@
 </style>
 
 <template>
-  <section class="wrap">
+  <section v-if="loading" class="loading-wrap flex-column flex-center">
+    <i class="el-icon-loading"></i>
+  </section>
+  <section v-else class="wrap">
     <!-- 面包屑导航 -->
     <el-breadcrumb class="breadcrumb" separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -44,6 +47,8 @@ export default {
         2: "关于我们"
       },
 
+      loading: false,
+
       companyLists: []
     };
   },
@@ -51,6 +56,7 @@ export default {
   created() {
     this.$api.getCompanies(res => {
       this.companyLists = res.data.data;
+      this.loading = true;
     });
   },
 
