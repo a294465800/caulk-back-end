@@ -22,13 +22,13 @@
   /* width: 250px; */
   height: 200px;
   border-radius: 5px;
-  margin: 0 20px 20px 0;
+  /* margin: 0 20px 20px 0; */
   position: relative;
 }
 
 .img-item img {
   /* width: 100%; */
-  height: 100%;
+  height: 200px;
   border-radius: 5px;
 }
 
@@ -78,6 +78,12 @@
         <el-form-item label="商品名称" prop="title">
           <el-input v-model="infoForm.title"></el-input>
         </el-form-item>
+        <el-form-item prop="cover" label="商品封面">
+          <el-upload class="avatar-uploader" name="image" accept="image/gif,image/png,image/jpg,image/jpeg" :action="host" :show-file-list="false" :on-success="handleUploadCoverSuccess" :before-upload="beforeAvatarUpload">
+            <img v-if="infoForm.cover" :src="infoForm.cover" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="商品图片（最多 5 张）" prop="images" :class="{'active':  hideUpload}">
           <!-- <div class="img-list flex-row">
             <div class="img-item" v-for="(img, index) in infoForm.images" :key="img.id">
@@ -118,7 +124,8 @@ export default {
         title: "",
         description: "",
         content: "",
-        images: []
+        images: [],
+        cover: ""
       },
 
       images: [],
@@ -145,6 +152,7 @@ export default {
       this.infoForm.description = commodity.description;
       this.infoForm.content = commodity.content;
       this.infoForm.id = commodity.id;
+      this.infoForm.cover = commodity.cover;
       this.images = commodity.pictures;
     }
   },
@@ -162,6 +170,11 @@ export default {
       if (this.infoForm.images.length >= 5) {
         this.hideUpload = true;
       }
+    },
+
+    //上传成功
+    handleUploadCoverSuccess(res, file, filelist) {
+      this.infoForm.cover = res.data.base_url;
     },
 
     //删除

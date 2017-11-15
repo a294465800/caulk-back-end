@@ -68,6 +68,11 @@
             <span>{{stateText[scope.row.state]}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="small" type="primary" v-if="scope.row.state == 1" @click="shipCommodity(scope.$index, scope.row)">发货</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
 
@@ -77,6 +82,23 @@
       </el-pagination>
     </div>
     <!-- /页码 -->
+
+    <el-dialog title="提示" :visible.sync="dialogBox" width="30%" center>
+      <div class="shipForm">
+        <el-form label-position="top" label-width="80px" :model="shipForm" :rules="rules" ref="shipForm">
+          <el-form-item label="快递公司" prop="name">
+            <el-input v-model="shipForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="快递单号" prop="track_number">
+            <el-input v-model="shipForm.track_number"></el-input>
+          </el-form-item>
+          <el-form-item style="text-align:center">
+            <el-button @click="dialogBox = false">取 消</el-button>
+            <el-button type="primary"  @click="confirmShip('shipForm')">确 定</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-dialog>
   </section>
 </template>
 
@@ -96,6 +118,21 @@ export default {
         state: "",
         number: ""
       },
+
+      shipForm: {
+        name: "",
+        track_number: ""
+      },
+
+      rules: {
+        name: [{ required: true, message: "快递公司名称不能为空！", trigger: "blur" }],
+        track_number: [
+          { required: true, message: "快递单号不能为空！", trigger: "blur" }
+        ]
+      },
+      dialogBox: false,
+      currentIndex: "",
+      currentRow: {},
 
       currentPage: 1,
       count: 0,
@@ -145,6 +182,30 @@ export default {
       this.$api.getOrders(getData, res => {
         this.orders = res.data.data;
         this.count = res.data.count;
+      });
+    },
+
+    //发货
+    shipCommodity(index, row) {
+      this.dialogBox = true;
+      this.currentIndex = index;
+      this.currentRow = row;
+    },
+
+    confirmShip(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$api.shipOrder(this.currentRow.id, this.shipForm, res => {
+            this.orders[this.currentIndex].state = 2;
+            this.dialogBox = false;
+            this.$message({
+              type: "success",
+              message: "发货成功"
+            });
+          });
+        } else {
+          return false;
+        }
       });
     }
   }

@@ -40,14 +40,11 @@
           <div class="title">{{commodity_title}}</div>
         </el-form-item>
         <el-form-item class="low-label" v-for="(standard, index) in standards" :key="standard.id" :label="standard.title" prop="feature">
-          <!-- <el-select v-model="productForm.feature[index]" placeholder="请选择规格">
-            <el-option v-for="(tag,tagIndex) in standard.attrs" :key="tag.id" :label="tag.title" :value="tag.id"></el-option>
-          </el-select> -->
           <el-radio-group v-model="productForm.feature[index]" size="medium">
             <el-radio style="margin: 0 10px 10px 0;" v-for="(tag,tagIndex) in standard.attrs" :key="tag.id" :label="tag.id">{{tag.title}}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="image" label="商品封面">
+        <el-form-item prop="image" label="商品轮播">
           <el-upload class="avatar-uploader" name="image" accept="image/gif,image/png,image/jpg,image/jpeg" :action="host" :show-file-list="false" :on-success="handleUploadSuccess" :before-upload="beforeUpload">
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>

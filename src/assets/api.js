@@ -343,6 +343,25 @@ export default {
   },
 
   /**
+   * 发货
+   * @param {string} id 
+   * @param {object} data {name, track_number}
+   * @param {function} cb 
+   */
+  shipOrder(id, data, cb) {
+    axios.post(`${host}delivery/order/${id}`, data)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
    * 获取产品图片
    * @param {string} id 
    * @param {function} cb 
