@@ -33,6 +33,7 @@ export default {
 
   // host: 'http://xcx.gdmeika.com/',
   host: 'http://192.168.3.22:9000/',
+  // host: 'http://119.23.255.177:8090/',
 
   /**
    * 出错提示函数
