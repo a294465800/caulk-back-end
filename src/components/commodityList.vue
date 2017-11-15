@@ -42,6 +42,11 @@
         <el-table-column prop="id" label="ID" sortable></el-table-column>
         <el-table-column prop="title" label="商品名称"></el-table-column>
         <el-table-column prop="description" label="描述" show-overflow-tooltip></el-table-column>
+        <el-table-column label="销量" prop="sales" sortable>
+          <template slot-scope="scope">
+            <span>{{scope.row.sales}} 件</span>
+          </template>
+        </el-table-column>
         <el-table-column label="规格">
           <template slot-scope="scope">
             <el-button type="text" @click="checkStandard(scope.row.id)">查看规格</el-button>
