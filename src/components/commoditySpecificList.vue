@@ -44,7 +44,7 @@
             <el-radio style="margin: 0 10px 10px 0;" v-for="(tag,tagIndex) in standard.attrs" :key="tag.id" :label="tag.id">{{tag.title}}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="image" label="商品轮播">
+        <el-form-item prop="image" label="商品封面">
           <el-upload class="avatar-uploader" name="image" accept="image/gif,image/png,image/jpg,image/jpeg" :action="host" :show-file-list="false" :on-success="handleUploadSuccess" :before-upload="beforeUpload">
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>

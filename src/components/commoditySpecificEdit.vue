@@ -44,7 +44,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('productForm')" style="width: 100%;">新增商品</el-button>
+          <el-button type="primary" @click="submitForm('productForm')" style="width: 100%;">保存商品</el-button>
         </el-form-item>
       </el-form>
     </div>
