@@ -14,7 +14,7 @@ const host = 'http://xcx.gdmeika.com/'
 /*
   配置 axios
 */
-axios.defaults.timeout = 5000
+axios.defaults.timeout = 10000
 axios.defaults.withCredentials = true
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.interceptors.request.use(config => {

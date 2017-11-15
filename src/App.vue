@@ -101,6 +101,11 @@ body {
   flex-direction: column;
 }
 
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
 /* element 组件 */
 
 .el-select .el-input {
@@ -163,6 +168,8 @@ body {
 }
 
 .loading-wrap i {
-  font-size: 20px;
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
 }
 </style>

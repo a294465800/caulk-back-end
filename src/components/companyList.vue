@@ -47,7 +47,7 @@ export default {
         2: "关于我们"
       },
 
-      loading: false,
+      loading: true,
 
       companyLists: []
     };
@@ -56,7 +56,7 @@ export default {
   created() {
     this.$api.getCompanies(res => {
       this.companyLists = res.data.data;
-      this.loading = true;
+      this.loading = false;
     });
   },
 
