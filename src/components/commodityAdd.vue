@@ -78,6 +78,9 @@
         <el-form-item label="商品名称" prop="title">
           <el-input v-model="infoForm.title"></el-input>
         </el-form-item>
+        <el-form-item label="商品销量" prop="sales">
+          <el-input v-model="infoForm.sales"></el-input>
+        </el-form-item>
         <el-form-item prop="cover" label="商品封面">
           <el-upload class="avatar-uploader" name="image" accept="image/gif,image/png,image/jpg,image/jpeg" :action="host" :show-file-list="false" :on-success="handleUploadCoverSuccess" :before-upload="beforeAvatarUpload">
             <img v-if="infoForm.cover" :src="infoForm.cover" class="avatar">
@@ -125,7 +128,8 @@ export default {
         description: "",
         content: "",
         images: [],
-        cover: ""
+        cover: "",
+        sales: ''
       },
 
       images: [],
@@ -153,6 +157,7 @@ export default {
       this.infoForm.content = commodity.content;
       this.infoForm.id = commodity.id;
       this.infoForm.cover = commodity.cover;
+      this.infoForm.sales = commodity.sales;
       this.images = commodity.pictures;
     }
   },
