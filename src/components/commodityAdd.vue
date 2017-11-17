@@ -60,6 +60,22 @@
   text-align: center;
   flex: 1;
 }
+
+.hide-upload-wrap {
+  margin-bottom: 20px;
+}
+
+.hide-upload-wrap > div {
+  border: 0 !important;
+}
+
+.hide-upload {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+}
 </style>
 
 <template>
@@ -104,7 +120,10 @@
         <el-form-item label="商品描述" prop="description">
           <el-input type="textarea" v-model="infoForm.description"></el-input>
         </el-form-item>
-        <el-form-item label="商品详情" prop="content">
+        <el-form-item label="商品细节描述">
+          <el-upload class="hide-upload-wrap" name="image" accept="image/gif,image/png,image/jpg,image/jpeg" :action="host" :show-file-list="false" :on-success="uploadHideSuccess">
+            <i class="el-icon-upload hide-upload"></i>
+          </el-upload>
           <div class="quill-editor-example">
             <quill-editor ref="myTextEditor" v-model="infoForm.content" :options="editorOption"></quill-editor>
             <div class="html ql-editor" v-html="infoForm.content"></div>
@@ -129,7 +148,7 @@ export default {
         content: "",
         images: [],
         cover: "",
-        sales: ''
+        sales: ""
       },
 
       images: [],
@@ -169,6 +188,10 @@ export default {
   },
 
   methods: {
+    //隐藏上传
+    uploadHideSuccess(res, file) {
+      this.infoForm.content += `<img src="${res.data.base_url}">`;
+    },
     //上传成功
     uploadSuccess(res, file, filelist) {
       this.infoForm.images.push(res.data.file_name);
@@ -216,6 +239,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          this.infoForm.sales ? "" : (this.infoForm.sales = 0);
           this.$api.postCommodityInfo(this.infoForm, res => {
             this.$message({
               type: "success",
