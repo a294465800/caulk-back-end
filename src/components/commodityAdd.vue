@@ -186,6 +186,8 @@ export default {
       this.infoForm.id = commodity.id;
       this.infoForm.cover = commodity.cover;
       this.infoForm.sales = commodity.sales;
+      this.infoForm.unit = commodity.unit
+      this.infoForm.price = commodity.price
       this.images = commodity.pictures;
     }
   },
