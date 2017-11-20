@@ -109,36 +109,6 @@ export default {
       this.$router.push({ name: "commodityAdd", params: { commodity: null } });
     },
 
-    //删除所有
-    // commodityDeleteAll() {
-    //   const ids = this.waittingData;
-    //   if (ids.length) {
-    //     console.log(ids);
-    //     this.$confirm("此操作将删除选中商品, 是否继续?", "提示", {
-    //       confirmButtonText: "确定",
-    //       cancelButtonText: "取消",
-    //       type: "warning"
-    //     })
-    //       .then(() => {
-    //         this.$message({
-    //           type: "success",
-    //           message: "删除成功!"
-    //         });
-    //       })
-    //       .catch(() => {
-    //         this.$message({
-    //           type: "info",
-    //           message: "已取消删除"
-    //         });
-    //       });
-    //   } else {
-    //     this.$message({
-    //       message: "请先选择一项",
-    //       type: "warning"
-    //     });
-    //   }
-    // },
-
     /**
      * 查看规格
      */
@@ -221,7 +191,15 @@ export default {
      * 页码事件
      * @param {number} page 当前页码
      * */
-    handleCurrentChange(page) {}
+    handleCurrentChange(page) {
+      this.$api.getCommodityInfo(
+        { title: this.searchForm.title, page: page },
+        res => {
+          this.commodities = res.data.data;
+          this.count = res.data.count;
+        }
+      );
+    }
   }
 };
 </script>
