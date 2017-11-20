@@ -97,6 +97,9 @@
         <el-form-item label="商品销量" prop="sales">
           <el-input v-model="infoForm.sales"></el-input>
         </el-form-item>
+        <el-form-item label="商品封面价格" prop="price">
+          <el-input v-model="infoForm.price" placeholder="文本格式，封面单位可自定义"></el-input>
+        </el-form-item>
         <el-form-item label="商品单位" prop="unit">
           <el-input v-model="infoForm.unit"></el-input>
         </el-form-item>
@@ -152,7 +155,8 @@ export default {
         images: [],
         cover: "",
         sales: "",
-        unit: ""
+        unit: "",
+        price: ""
       },
 
       images: [],
@@ -167,6 +171,7 @@ export default {
 
       rules: {
         title: [{ required: true, message: "请输入商品名称", trigger: "blur" }],
+        price: [{ required: true, message: "请输入商品封面价格", trigger: "blur" }],
         description: [{ required: true, message: "请输入商品描述", trigger: "blur" }]
       }
     };
