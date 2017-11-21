@@ -24,9 +24,9 @@
         <el-form-item label="订单状态">
           <el-select v-model="searchForm.status" placeholder="订单状态" @change="onSubmit">
             <el-option label="全部" value=""></el-option>
-            <el-option label="未接单" value="0"></el-option>
-            <el-option label="已受理" value="1"></el-option>
-            <el-option label="已完成" value="2"></el-option>
+            <el-option label="未接单" value="1"></el-option>
+            <el-option label="已受理" value="2"></el-option>
+            <el-option label="已完成" value="3"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
