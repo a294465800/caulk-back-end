@@ -23,9 +23,10 @@
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="订单状态">
           <el-select v-model="searchForm.status" placeholder="订单状态" @change="onSubmit">
-            <el-option label="全部" value="2"></el-option>
+            <el-option label="全部" value=""></el-option>
             <el-option label="未接单" value="0"></el-option>
             <el-option label="已受理" value="1"></el-option>
+            <el-option label="已完成" value="2"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -48,7 +49,9 @@
         <el-table-column prop="state" label="当前状态" sortable>
           <template slot-scope="scope">
             <span v-if="scope.row.state == 0" class="warning">未接单</span>
-            <span v-else class="success">已受理</span>
+            <span v-else-if="scope.row.state == 1" class="success">已受理</span>
+            <span v-else-if="scope.row.state == 2" class="normal">已完成</span>
+            <span v-else>未知</span>
           </template>
         </el-table-column>
       </el-table>
@@ -69,14 +72,15 @@ export default {
     return {
       //搜索 form
       searchForm: {
-        status: "2"
+        status: ""
       },
 
       count: 0,
 
       statusText: {
         0: "未接单",
-        1: "已受理"
+        1: "已受理",
+        2: "已完成"
       },
       currentPage: 1,
 
@@ -101,9 +105,7 @@ export default {
       let searchData = {
         page: page
       };
-      if (state != 2) {
-        searchData.state = state;
-      }
+      searchData.state = state;
       this.$api.getReservations(searchData, res => {
         this.reservations = res.data.data;
       });
@@ -113,9 +115,7 @@ export default {
     onSubmit(e) {
       const state = e;
       let searchData = {};
-      if (state != 2) {
-        searchData.state = state;
-      }
+      searchData.state = state;
       this.$api.getReservations(searchData, res => {
         this.reservations = res.data.data;
         this.count = res.data.count;
