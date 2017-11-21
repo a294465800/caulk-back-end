@@ -42,8 +42,7 @@
         <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
         <el-table-column prop="worker" label="接单师傅">
           <template slot-scope="scope">
-            <span v-if="scope.row.state == 0">{{scope.row.worker}}</span>
-            <span v-else>暂未接单</span>
+            <span>{{scope.row.worker || '暂未接单'}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="state" label="当前状态" sortable>
