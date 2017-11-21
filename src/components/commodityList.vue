@@ -196,7 +196,6 @@ export default {
         { title: this.searchForm.title, page: page },
         res => {
           this.commodities = res.data.data;
-          this.count = res.data.count;
         }
       );
     }
