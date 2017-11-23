@@ -639,6 +639,40 @@ export default {
         this.APIError(error.response)
       })
   },
+  /**
+   * 获取加盟商信息
+   * @param {Function} cb 回调
+   */
+  getInfo(cb) {
+    axios.get(`${host}info`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 提交加盟商信息
+   * @param {Object} data {}
+   * @param {Function} cb 回调
+   */
+  postInfo(data, cb) {
+    axios.post(`${host}info`, data)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
 
   /**
    * 假如省份的日期没有更新，就直接拿 localStorage 的数据

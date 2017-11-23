@@ -63,6 +63,32 @@ body {
 .price {
   color: #fa5555;
 }
+.ad-imgs img {
+  width: auto !important;
+  height: 200px !important;
+}
+
+.ad-imgs .el-icon-plus {
+  line-height: 200px;
+}
+
+.ad-imgs .el-upload--picture-card,
+.ad-imgs .el-upload-list--picture-card .el-upload-list__item {
+  width: auto;
+  min-width: 200px;
+  height: 200px;
+}
+
+.info-imgs img,
+.info-imgs .el-upload--picture-card,
+.info-imgs .el-upload-list--picture-card .el-upload-list__item {
+  width: 200px;
+  height: 200px;
+}
+
+.info-imgs .el-icon-plus {
+  line-height: 200px;
+}
 
 /* 面包屑导航 */
 .breadcrumb {

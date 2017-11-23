@@ -71,11 +71,14 @@ export default {
           };
           this.$api.login(login, res => {
             sessionStorage.username = this.loginInfo.username;
+            sessionStorage.type = res.data.data.role;
             this.$message({
               type: "success",
               message: "登录成功"
             });
-            this.$router.push("/");
+            this.$router.push({
+              name: "indexContent"
+            });
           });
         } else {
           return false;

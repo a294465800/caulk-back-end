@@ -25,6 +25,7 @@ import masterList from '@/components/masterList'
 import masterApplyList from '@/components/masterApplyList'
 import franchiseeList from '@/components/franchiseeList'
 import franchiseeAdd from '@/components/franchiseeAdd'
+import Company from '@/components/company'
 
 Vue.use(Router)
 
@@ -165,6 +166,10 @@ export default new Router({
         path: '/franchisee/add',
         name: 'franchiseeAdd',
         component: franchiseeAdd
+      }, {
+        path: 'company',
+        name: 'Company',
+        component: Company
       }]
     }
   ]
