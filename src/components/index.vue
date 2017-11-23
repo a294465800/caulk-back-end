@@ -67,7 +67,7 @@ body > .el-container {
     <div class="header-user">
       <el-dropdown trigger="click">
       <span class="el-dropdown-link">
-        <i>欢迎</i>管理员
+        <i>欢迎</i>{{admin}}
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
@@ -152,13 +152,14 @@ export default {
       //导航展开控制
       isCollapse: false,
 
-      activeNav: "/"
+      activeNav: "/",
+      admin: "管理员"
     };
   },
 
   created() {
     this.activeNav = this.$route.path;
-    // console.log(this.$route.path);
+    this.admin = sessionStorage.username;
   },
   methods: {
     //退出登录

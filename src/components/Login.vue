@@ -77,14 +77,6 @@ export default {
             });
             this.$router.push("/");
           });
-          // this.$api.login(login, () => {
-          //   sessionStorage.username = this.loginInfo.username
-          //   this.$message({
-          //     type: 'success',
-          //     message: '登录成功',
-          //   })
-          //   this.$router.push('/')
-          // })
         } else {
           return false;
         }
