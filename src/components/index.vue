@@ -123,6 +123,15 @@ body > .el-container {
             <el-menu-item index="/list/apply/master">申请列表</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
+        <el-submenu index="/franchisee">
+          <template slot="title">
+            <i class="el-icon-phone-outline"></i>
+            <span>加盟商管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="/list/franchisee">加盟商列表</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
       </el-menu>
     </el-aside>
     <!-- 左侧导航 -->

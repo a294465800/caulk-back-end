@@ -8,8 +8,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 const TXWebService = 'http://apis.map.qq.com/ws/district/v1/'
 const TXKey = 'FF2BZ-H34WP-GQPDC-VFKIS-P7DDH-BCFNG'
 // const host = 'http://119.23.255.177:8090/'
-// const host = 'http://192.168.3.22:9000/'
-const host = 'http://xcx.gdmeika.com/'
+const host = 'http://192.168.3.22:9000/'
+// const host = 'http://xcx.gdmeika.com/'
 
 /*
   配置 axios
@@ -31,8 +31,8 @@ axios.interceptors.request.use(config => {
 
 export default {
 
-  host: 'http://xcx.gdmeika.com/',
-  // host: 'http://192.168.3.22:9000/',
+  // host: 'http://xcx.gdmeika.com/',
+  host: 'http://192.168.3.22:9000/',
   // host: 'http://119.23.255.177:8090/',
 
   /**
@@ -573,6 +573,62 @@ export default {
    */
   changeWorker(id, cb) {
     axios.get(`${host}modify/worker/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 获取 app 列表
+   * @param {Object} data {page, limit}
+   * @param {Function} cb 回调
+   */
+  getAppsList(data, cb) {
+    axios.get(`${host}apps`, {
+        params: data
+      })
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 新增加盟商
+   * @param {Object} data {username, password, name, app_id, secret, template_id}
+   * @param {Function} cb 回调
+   */
+  postAppUser(data, cb) {
+    axios.post(`${host}add/user`, data)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 删除加盟商
+   * @param {String} id 
+   * @param {Function} cb 回调
+   */
+  deleteAppUser(id, cb) {
+    axios.get(`${host}del/app/${id}`)
       .then(res => {
         if ('200' === res.data.code) {
           typeof cb === 'function' && cb(res)
