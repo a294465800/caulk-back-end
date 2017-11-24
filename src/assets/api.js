@@ -7,9 +7,10 @@ import {
 import 'element-ui/lib/theme-chalk/index.css'
 const TXWebService = 'http://apis.map.qq.com/ws/district/v1/'
 const TXKey = 'FF2BZ-H34WP-GQPDC-VFKIS-P7DDH-BCFNG'
-const host = 'http://119.23.255.177:8090/'
+// const host = 'http://119.23.255.177:8090/'
 // const host = 'http://192.168.3.22:9000/'
 // const host = 'http://xcx.gdmeika.com/'
+const host = 'https://xcx.xiashantown.cn/'
 
 /*
   配置 axios
