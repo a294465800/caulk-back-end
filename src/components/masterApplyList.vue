@@ -37,7 +37,7 @@
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="省份">
           <el-select v-model="searchForm.area" placeholder="选择省份">
-            <el-option v-for="sheng in shengs" :key="sheng.id" :label="sheng.fullname" :value="sheng.id"></el-option>
+            <el-option v-for="sheng in shengs" :key="sheng.id" :label="sheng.fullname" :value="sheng.fullname"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="申请状态">
@@ -96,7 +96,8 @@ export default {
   data() {
     return {
       searchForm: {
-        state: ""
+        state: "",
+        area: ''
       },
 
       shengs: "",
