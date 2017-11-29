@@ -676,6 +676,24 @@ export default {
   },
 
   /**
+   * 导出
+   * @param {Object} data {table, start, end, state}
+   * @param {Function} cb 
+   */
+  postExport(data, cb) {
+    axios.post(`${host}output`, data)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
    * 假如省份的日期没有更新，就直接拿 localStorage 的数据
    * @param {*行政区 ID} id 
    * @param {* jsonP 回调} callback 

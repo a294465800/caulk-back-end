@@ -133,6 +133,10 @@ body > .el-container {
               <el-menu-item index="/list/franchisee">加盟商列表</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
+          <el-menu-item index="/export">
+            <i class="el-icon-tickets"></i>
+            <span slot="title">列表导出</span>
+          </el-menu-item>
         </template>
         <template v-else-if="type === 'franchisee'">
           <el-menu-item index="/company">
@@ -162,7 +166,7 @@ export default {
 
       activeNav: "/",
       admin: "管理员",
-      type: sessionStorage.type || ''
+      type: sessionStorage.type || ""
     };
   },
 

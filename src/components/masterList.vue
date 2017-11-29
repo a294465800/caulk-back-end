@@ -61,7 +61,6 @@
             <el-option v-for="sheng in shengs" :key="sheng.id" :label="sheng.fullname" :value="sheng.fullname"></el-option>
           </el-select>
         </el-form-item>
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">搜索</el-button>
         </el-form-item>
