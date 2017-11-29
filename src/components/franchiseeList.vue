@@ -60,7 +60,7 @@
     <div class="tale-list">
       <el-table :data="franchiseeList" border stripe style="min-width: 900px;">
         <el-table-column prop="id" label="ID" sortable></el-table-column>
-        <el-table-column prop="username" label="登录名称"></el-table-column>
+        <el-table-column prop="user.username" label="登录名称"></el-table-column>
         <el-table-column prop="name" label="加盟商名称"></el-table-column>
         <el-table-column prop="app_id" label="APPID"></el-table-column>
         <el-table-column prop="secret" label="secret"></el-table-column>
@@ -91,17 +91,7 @@ export default {
       selectInput: "",
       select: "name",
 
-      franchiseeList: [
-        {
-          id: 1,
-          username: "sa",
-          name: "asdsadasd",
-          app_id: "2312312312312313",
-          secret: "sdasd213asd21sad",
-          template_id: "12321asf213sadga",
-          created_at: "2017-10-12"
-        }
-      ],
+      franchiseeList: [],
       count: 0,
       currentPage: 1
     };
