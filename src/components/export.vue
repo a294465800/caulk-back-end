@@ -174,34 +174,43 @@ export default {
 
   methods: {
     reservaExport() {
-      const getData = this.reservaForm;
+      let getData = this.reservaForm;
       if (getData.dateRange !== "") {
-        getData.start = new Date(getData.dateRange[0]).getTime();
-        getData.end = new Date(getData.dateRange[1]).getTime();
+        // getData.start = new Date(getData.dateRange[0]).getTime();
+        // getData.end = new Date(getData.dateRange[1]).getTime();
+        getData.start = getData.dateRange[0];
+        getData.end = getData.dateRange[1];
       }
       let url = `${this.$api.host}output?table=reverse&start=${getData.start ||
         ""}&end=${getData.end || ""}&state=${getData.state}`;
+      console.log(url);
       window.open(url);
     },
 
     orderExport() {
-      const getData = this.orderForm;
+      let getData = this.orderForm;
       if (getData.dateRange !== "") {
-        getData.start = new Date(getData.dateRange[0]).getTime();
-        getData.end = new Date(getData.dateRange[1]).getTime();
+        // getData.start = new Date(getData.dateRange[0]).getTime();
+        // getData.end = new Date(getData.dateRange[1]).getTime();
+        getData.start = getData.dateRange[0];
+        getData.end = getData.dateRange[1];
       }
-      let url = `${this.$api.host}output?table=reverse&start=${getData.start ||
+      let url = `${this.$api.host}output?table=order&start=${getData.start ||
         ""}&end=${getData.end || ""}&state=${getData.state}`;
+      console.log(url);
       window.open(url);
     },
     masterExport() {
-      const getData = this.masterForm;
+      let getData = this.masterForm;
       if (getData.dateRange !== "") {
-        getData.start = new Date(getData.dateRange[0]).getTime();
-        getData.end = new Date(getData.dateRange[1]).getTime();
+        // getData.start = new Date(getData.dateRange[0]).getTime();
+        // getData.end = new Date(getData.dateRange[1]).getTime();
+        getData.start = getData.dateRange[0];
+        getData.end = getData.dateRange[1];
       }
-      let url = `${this.$api.host}output?table=reverse&start=${getData.start ||
+      let url = `${this.$api.host}output?table=worker&start=${getData.start ||
         ""}&end=${getData.end || ""}&state=${getData.state}`;
+      console.log(url);
       window.open(url);
     }
   }
