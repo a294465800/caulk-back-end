@@ -201,8 +201,8 @@ export default {
     reservaExport() {
       let getData = this.reservaForm;
       if (getData.dateRange !== "") {
-        getData.start = dateFormat(getData.dateRange[0]);
-        getData.end = dateFormat(getData.dateRange[1]);
+        getData.start = this.dateFormat(getData.dateRange[0]);
+        getData.end = this.dateFormat(getData.dateRange[1]);
       }
       let url = `${this.$api.host}output?table=reverse&start=${getData.start ||
         ""}&end=${getData.end || ""}&state=${getData.state}`;
@@ -213,8 +213,8 @@ export default {
     orderExport() {
       let getData = this.orderForm;
       if (getData.dateRange !== "") {
-        getData.start = dateFormat(getData.dateRange[0]);
-        getData.end = dateFormat(getData.dateRange[1]);
+        getData.start = this.dateFormat(getData.dateRange[0]);
+        getData.end = this.dateFormat(getData.dateRange[1]);
       }
       let url = `${this.$api.host}output?table=order&start=${getData.start ||
         ""}&end=${getData.end || ""}&state=${getData.state}`;
@@ -224,8 +224,8 @@ export default {
     masterExport() {
       let getData = this.masterForm;
       if (getData.dateRange !== "") {
-        getData.start = dateFormat(getData.dateRange[0]);
-        getData.end = dateFormat(getData.dateRange[1]);
+        getData.start = this.dateFormat(getData.dateRange[0]);
+        getData.end = this.dateFormat(getData.dateRange[1]);
       }
       let url = `${this.$api.host}output?table=worker&start=${getData.start ||
         ""}&end=${getData.end || ""}&state=${getData.state}`;
