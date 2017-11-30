@@ -66,10 +66,17 @@
         <el-table-column prop="secret" label="secret"></el-table-column>
         <el-table-column prop="template_id" label="消息模版id（template_id）" show-overflow-tooltip></el-table-column>
         <el-table-column prop="created_at" label="加盟时间"></el-table-column>
-        <el-table-column prop="state" label="操作" :width="150">
+        <el-table-column prop="state" label="状态">
           <template slot-scope="scope">
-            <!-- <el-button type="warning" size="small" @click="resetPassword(scope.row)">重置密码</el-button> -->
-            <el-button type="danger" size="small" @click="deleteFranchisee(scope.$index,scope.row)">移除</el-button>
+            <span v-if="scope.row.state === 1" class="success">正常使用</span>
+            <span v-else class="warning">已停用</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="state" label="操作" :width="200">
+          <template slot-scope="scope">
+            <el-button type="warning" size="small" @click="resetPassword(scope.row)">重置密码</el-button>
+            <el-button v-if="scope.row.state === 1" type="danger" size="small" @click="stopFranchisee(scope.$index,scope.row)">停用</el-button>
+            <el-button v-else type="info" size="small" @click="restartFranchisee(scope.$index,scope.row)">恢复使用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -122,23 +129,63 @@ export default {
 
     //重置密码
     resetPassword(row) {
-      console.log(row);
+      this.$prompt("请输入密码", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          this.$api.postAppPassword(row.id, { password: value }, res => {
+            this.$message({
+              type: "success",
+              message: "修改成功！ "
+            });
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入"
+          });
+        });
     },
 
-    //移除
-    deleteFranchisee(index, row) {
-      this.$confirm("此操作将移除该加盟商, 是否继续?", "提示", {
+    //停用
+    stopFranchisee(index, row) {
+      this.$confirm("此操作将停用该加盟商, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
           this.$api.deleteAppUser(row.id, res => {
-            this.count--;
-            this.franchiseeList.splice(index, 1);
+            this.franchiseeList[index].state = 0;
             this.$message({
               type: "success",
-              message: "删除成功"
+              message: "停用成功"
+            });
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
+    },
+
+    //恢复
+    restartFranchisee(index, row) {
+      this.$confirm("此操作将恢复该加盟商的使用, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$api.deleteAppUser(row.id, res => {
+            this.franchiseeList[index].state = 1;
+            this.$message({
+              type: "success",
+              message: "恢复成功"
             });
           });
         })

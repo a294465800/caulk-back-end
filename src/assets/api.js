@@ -624,12 +624,30 @@ export default {
   },
 
   /**
-   * 删除加盟商
+   * 停用 / 恢复加盟商
    * @param {String} id 
    * @param {Function} cb 回调
    */
   deleteAppUser(id, cb) {
     axios.get(`${host}del/app/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 重置密码
+   * @param {Object} data {password}
+   * @param {Function} cb 回调
+   */
+  postAppPassword(id, data, cb) {
+    axios.post(`${host}modify/password/${id}`, data)
       .then(res => {
         if ('200' === res.data.code) {
           typeof cb === 'function' && cb(res)
