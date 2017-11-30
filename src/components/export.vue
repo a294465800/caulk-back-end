@@ -198,13 +198,16 @@ export default {
   methods: {
     reservaExport() {
       let getData = this.reservaForm;
-      if (getData.dateRange !== "") {
+      if (getData.dateRange) {
         getData.start = new Date(getData.dateRange[0]).dateFormat(
-          "yyyy-MM-dd HH:mm:ss"
+          "yyyy-MM-dd hh:mm:ss"
         );
         getData.end = new Date(getData.dateRange[1]).dateFormat(
-          "yyyy-MM-dd HH:mm:ss"
+          "yyyy-MM-dd hh:mm:ss"
         );
+      } else {
+        getData.start = "";
+        getData.end = "";
       }
       let url = `${this.$api.host}output?table=reverse&start=${getData.start ||
         ""}&end=${getData.end || ""}&state=${getData.state}`;
@@ -214,13 +217,16 @@ export default {
 
     orderExport() {
       let getData = this.orderForm;
-      if (getData.dateRange !== "") {
+      if (getData.dateRange) {
         getData.start = new Date(getData.dateRange[0]).dateFormat(
-          "yyyy-MM-dd HH:mm:ss"
+          "yyyy-MM-dd hh:mm:ss"
         );
         getData.end = new Date(getData.dateRange[1]).dateFormat(
-          "yyyy-MM-dd HH:mm:ss"
+          "yyyy-MM-dd hh:mm:ss"
         );
+      } else {
+        getData.start = "";
+        getData.end = "";
       }
       let url = `${this.$api.host}output?table=order&start=${getData.start ||
         ""}&end=${getData.end || ""}&state=${getData.state}`;
@@ -229,13 +235,17 @@ export default {
     },
     masterExport() {
       let getData = this.masterForm;
-      if (getData.dateRange !== "") {
+      console.log(getData.dateRange);
+      if (getData.dateRange) {
         getData.start = new Date(getData.dateRange[0]).dateFormat(
-          "yyyy-MM-dd HH:mm:ss"
+          "yyyy-MM-dd hh:mm:ss"
         );
         getData.end = new Date(getData.dateRange[1]).dateFormat(
-          "yyyy-MM-dd HH:mm:ss"
+          "yyyy-MM-dd hh:mm:ss"
         );
+      } else {
+        getData.start = "";
+        getData.end = "";
       }
       let url = `${this.$api.host}output?table=worker&start=${getData.start ||
         ""}&end=${getData.end || ""}&state=${getData.state}`;
