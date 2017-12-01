@@ -197,12 +197,12 @@ export default {
 
     //移除图片
     handleRemove(file, filelist) {
-      const tmpFile = file.name ? file.name : file.response.data.file_name;
+      const tmpFile = file.response ? file.response.data.file_name : file.name;
       const index = this.companyForm.pic.indexOf(tmpFile);
       if (index >= 0) {
         this.companyForm.pic.splice(index, 1);
-        if(!this.companyForm.pic.length){
-          this.companyForm.pic = ['']
+        if (!this.companyForm.pic.length) {
+          this.companyForm.pic = [""];
         }
       }
     },
