@@ -586,6 +586,24 @@ export default {
   },
 
   /**
+   * 修改师傅信息
+   * @param {String} id 
+   * @param {Object} data {name, phone}
+   * @param {Function} cb 回调
+   */
+  editMaster(id, data, cb) {
+    axios.post(`${host}modify/apply/${id}`, data)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+  /**
    * 获取 app 列表
    * @param {Object} data {page, limit}
    * @param {Function} cb 回调
