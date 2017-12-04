@@ -311,6 +311,10 @@ export default {
             currentMaster.index
           ].apply.phone = this.editMasterForm.phone;
           this.editDialog = false;
+          this.$message({
+            type: "success",
+            message: "修改成功"
+          });
         }
       );
     },
