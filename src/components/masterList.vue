@@ -102,10 +102,10 @@
         </el-table-column>
         <el-table-column prop="state" label="操作" :width="200">
           <template slot-scope="scope">
-            <!-- <el-button type="info" @click="editMaster(scope.$index, scope.row)">修改</el-button> -->
+            <!-- <el-button type="info" size="small" @click="editMaster(scope.$index, scope.row)">修改</el-button> -->
             <el-button v-if="scope.row.enable == 1" size="small" type="danger" @click="stopMaster(scope.$index, scope.row.id)">停用</el-button>
             <el-button v-else size="small" type="primary" @click="reuseMaster(scope.$index, scope.row.id)">恢复使用</el-button>
-            <el-button type="danger" @click="deleteMaster(scope.$index, scope.row)">删除</el-button>
+            <el-button type="danger" size="small" @click="deleteMaster(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
