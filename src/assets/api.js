@@ -603,6 +603,25 @@ export default {
         this.APIError(error.response)
       })
   },
+
+  /**
+   * 删除师傅
+   * @param {String} id 
+   * @param {Function} cb 回调
+   */
+  deleteMaster(id, cb) {
+    axios.get(`${host}del/apply/${id}`)
+      .then(res => {
+        if ('200' === res.data.code) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
   /**
    * 获取 app 列表
    * @param {Object} data {page, limit}

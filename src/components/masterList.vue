@@ -102,9 +102,10 @@
         </el-table-column>
         <el-table-column prop="state" label="操作" :width="200">
           <template slot-scope="scope">
-            <el-button type="info" @click="editMaster(scope.$index, scope.row)">修改</el-button>
+            <!-- <el-button type="info" @click="editMaster(scope.$index, scope.row)">修改</el-button> -->
             <el-button v-if="scope.row.enable == 1" size="small" type="danger" @click="stopMaster(scope.$index, scope.row.id)">停用</el-button>
             <el-button v-else size="small" type="primary" @click="reuseMaster(scope.$index, scope.row.id)">恢复使用</el-button>
+            <el-button type="danger" @click="deleteMaster(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -117,7 +118,7 @@
     </div>
     <!-- /页码 -->
 
-    <el-dialog title="师傅修改" :visible.sync="editDialog">
+    <!-- <el-dialog title="师傅修改" :visible.sync="editDialog">
       <el-form label-position="top" label-width="80px" :model="editMasterForm">
         <el-form-item label="姓名">
           <el-input v-model="editMasterForm.name"></el-input>
@@ -130,7 +131,7 @@
         <el-button @click="editDialog = false">取 消</el-button>
         <el-button type="primary" @click="confirmEditMaster">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </section>
 </template>
 
@@ -184,18 +185,18 @@ export default {
       currentPage: 1,
 
       searchData1: {},
-      searchData2: {},
+      searchData2: {}
 
-      editDialog: false,
-      currentMaster: {
-        index: "",
-        row: ""
-      },
+      // editDialog: false,
+      // currentMaster: {
+      //   index: "",
+      //   row: ""
+      // },
 
-      editMasterForm: {
-        phone: "",
-        name: ""
-      }
+      // editMasterForm: {
+      //   phone: "",
+      //   name: ""
+      // }
     };
   },
 
@@ -289,35 +290,59 @@ export default {
         });
     },
 
-    //修改
-    editMaster(index, row) {
-      this.editDialog = true;
-      this.currentMaster.index = index;
-      this.currentMaster.row = row;
-      this.editMasterForm.name = row.apply.name;
-      this.editMasterForm.phone = row.apply.phone;
+    //删除
+    deleteMaster(index, row) {
+      this.$confirm("此操作将删除该师傅帐号, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$api.deleteMaster(row.apply.id, res => {
+            this.workerLists.splice(index, 1);
+            this.$message({
+              type: "success",
+              message: "删除成功"
+            });
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
     },
 
-    confirmEditMaster() {
-      const currentMaster = this.currentMaster;
-      this.$api.editMaster(
-        currentMaster.row.apply.id,
-        this.editMasterForm,
-        res => {
-          this.workerLists[
-            currentMaster.index
-          ].apply.name = this.editMasterForm.name;
-          this.workerLists[
-            currentMaster.index
-          ].apply.phone = this.editMasterForm.phone;
-          this.editDialog = false;
-          this.$message({
-            type: "success",
-            message: "修改成功"
-          });
-        }
-      );
-    },
+    //修改
+    // editMaster(index, row) {
+    //   this.editDialog = true;
+    //   this.currentMaster.index = index;
+    //   this.currentMaster.row = row;
+    //   this.editMasterForm.name = row.apply.name;
+    //   this.editMasterForm.phone = row.apply.phone;
+    // },
+
+    // confirmEditMaster() {
+    //   const currentMaster = this.currentMaster;
+    //   this.$api.editMaster(
+    //     currentMaster.row.apply.id,
+    //     this.editMasterForm,
+    //     res => {
+    //       this.workerLists[
+    //         currentMaster.index
+    //       ].apply.name = this.editMasterForm.name;
+    //       this.workerLists[
+    //         currentMaster.index
+    //       ].apply.phone = this.editMasterForm.phone;
+    //       this.editDialog = false;
+    //       this.$message({
+    //         type: "success",
+    //         message: "修改成功"
+    //       });
+    //     }
+    //   );
+    // },
 
     //页码
     handleCurrentChange(page) {
