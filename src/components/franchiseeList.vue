@@ -72,8 +72,9 @@
             <span v-else class="warning">已停用</span>
           </template>
         </el-table-column>
-        <el-table-column prop="state" label="操作" :width="200">
+        <el-table-column prop="state" label="操作" :width="240">
           <template slot-scope="scope">
+            <el-button type="primary" size="small" @click="editBtn(scope.$index, scope.row)">修改</el-button>
             <el-button type="warning" size="small" @click="resetPassword(scope.row)">重置密码</el-button>
             <el-button v-if="scope.row.state === 1" type="danger" size="small" @click="stopFranchisee(scope.$index,scope.row)">停用</el-button>
             <el-button v-else type="info" size="small" @click="restartFranchisee(scope.$index,scope.row)">恢复使用</el-button>
@@ -88,6 +89,27 @@
       </el-pagination>
     </div>
     <!-- /页码 -->
+
+    <el-dialog title="提示" :visible.sync="editInfoDialog" center>
+      <el-form label-position="right" label-width="80px" :model="editForm">
+        <el-form-item label="name">
+          <el-input v-model="editForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="APPID">
+          <el-input v-model="editForm.app_id"></el-input>
+        </el-form-item>
+        <el-form-item label="secret">
+          <el-input v-model="editForm.secret"></el-input>
+        </el-form-item>
+        <el-form-item label="消息模版id">
+          <el-input v-model="editForm.template_id"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editInfoDialog = false">取 消</el-button>
+        <el-button type="primary" @click="confirmEdit">确 定</el-button>
+      </span>
+    </el-dialog>
   </section>
 </template>
 
@@ -100,7 +122,20 @@ export default {
 
       franchiseeList: [],
       count: 0,
-      currentPage: 1
+      currentPage: 1,
+
+      editInfoDialog: false,
+      editForm: {
+        name: "",
+        app_id: "",
+        secret: "",
+        template_id: ""
+      },
+
+      currentEdit: {
+        index: "",
+        row: ""
+      }
     };
   },
 
@@ -112,6 +147,31 @@ export default {
   },
 
   methods: {
+    //修改按钮
+    editBtn(index, row) {
+      this.currentEdit.index = index;
+      this.currentEdit.row = row;
+      this.editForm.app_id = row.app_id;
+      this.editForm.secret = row.secret;
+      this.editForm.template_id = row.template_id;
+      this.editForm.name = row.name;
+    },
+    //修改确定
+    confirmEdit() {
+      const currentEdit = this.currentEdit;
+      const editForm = this.editForm;
+      this.$api.editAppUser(currentEdit.row.id, editForm, res => {
+        this.$message({
+          type: "success",
+          message: "修改成功"
+        });
+        this.franchiseeList[currentEdit.index].name = editForm.name;
+        this.franchiseeList[currentEdit.index].app_id = editForm.app_id;
+        this.franchiseeList[currentEdit.index].secret = editForm.secret;
+        this.franchiseeList[currentEdit.index].template_id = editForm.template_id;
+        this.editInfoDialog = false;
+      });
+    },
     //新增
     addNewFrannchisee() {
       this.$router.push({ name: "franchiseeAdd" });
