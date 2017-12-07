@@ -72,7 +72,7 @@
             <span v-else class="warning">已停用</span>
           </template>
         </el-table-column>
-        <el-table-column prop="state" label="操作" :width="240">
+        <el-table-column prop="state" label="操作" :width="280">
           <template slot-scope="scope">
             <el-button type="primary" size="small" @click="editBtn(scope.$index, scope.row)">修改</el-button>
             <el-button type="warning" size="small" @click="resetPassword(scope.row)">重置密码</el-button>
@@ -155,6 +155,7 @@ export default {
       this.editForm.secret = row.secret;
       this.editForm.template_id = row.template_id;
       this.editForm.name = row.name;
+      this.editInfoDialog = true;
     },
     //修改确定
     confirmEdit() {
@@ -168,7 +169,8 @@ export default {
         this.franchiseeList[currentEdit.index].name = editForm.name;
         this.franchiseeList[currentEdit.index].app_id = editForm.app_id;
         this.franchiseeList[currentEdit.index].secret = editForm.secret;
-        this.franchiseeList[currentEdit.index].template_id = editForm.template_id;
+        this.franchiseeList[currentEdit.index].template_id =
+          editForm.template_id;
         this.editInfoDialog = false;
       });
     },
