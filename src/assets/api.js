@@ -90,7 +90,7 @@ export default {
    * @param {function} cb 
    */
   postCommodityInfo(data, cb) {
-    axios.post(`${host}info`, data)
+    axios.post(`${host}commodity/info`, data)
       .then(res => {
         if ('200' === res.data.code) {
           typeof cb === 'function' && cb(res)
